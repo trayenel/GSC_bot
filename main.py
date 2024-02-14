@@ -5,6 +5,10 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
+API_ID = 29981079
+API_HASH = "dfd1afdf1799bb2581292557762cf223"
+BOT_TOKEN = "6413043221:AAG5xn797fReEmtx_hsMZEbfXNcOpaPb4FU"
+
 start_msg = "Salutare, pentru ajutor tastati tasta /help"
 help_msg = "Pentru menu tastatzi /menu"
 menu_msg = "Cine este cel mai misto manelist?"
@@ -43,5 +47,6 @@ async def menuHandler(client, message):
             ]
         ),
     )
+
 
 app.run()
