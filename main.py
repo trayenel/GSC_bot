@@ -8,22 +8,16 @@ from pyrogram.types import (
 
 i18n.install()
 
-start_msg = "Salutare, pentru ajutor tastati tasta /help"
-help_msg = "Pentru menu tastatzi /menu"
-menu_msg = "Cine este cel mai misto manelist?"
-
-print(_(start_msg))
-
 app = Client("botTest", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command(["start"]) & filters.private)
 async def startHandler(client, message):
-    await app.send_message(message.chat.id, start_msg)
+    await app.send_message(message.chat.id, "Salutare, pentru ajutor tastati tasta /help")
 
 
 @app.on_message(filters.command(["help"]) & filters.private)
 async def helpHandler(client, message):
-    await app.send_message(message.chat.id, help_msg)
+    await app.send_message(message.chat.id, "Pentru menu tastatzi /menu")
 
 
 @app.on_message(filters.command(["menu"]) & filters.private)
