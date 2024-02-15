@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-15 14:06+0200\n"
+"POT-Creation-Date: 2024-02-15 16:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.py:31
-msgid "Cine este cel mai misto MANELIST?"
-msgstr "WHO IS THE BEST MANELIST?"
+#: main.py:44
+msgid "Mamaliga cu mititei infasetei"
+msgstr "Polenta with wrapped little ones"
