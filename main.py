@@ -24,7 +24,7 @@ async def helpHandler(client, message):
 async def menuHandler(client, message):
     await app.send_message(
         message.chat.id,
-        "Cine este cel mai misto MANELIST?",
+        _("Cine este cel mai misto MANELIST?"),
         reply_markup=InlineKeyboardMarkup(
             [
                 [
