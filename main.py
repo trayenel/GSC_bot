@@ -11,7 +11,7 @@ setLanguage('en')
 
 app = Client("botTest", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-@app.on_message(filters.command(["lang"]) & filters.private)
+@app.on_message(filters.command(["start"]) & filters.private)
 async def startHandler(client, message):
     await app.send_message(
         message.chat.id,
