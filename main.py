@@ -1,3 +1,5 @@
+import tldextract
+
 from localisation import setLanguage
 from pyrogram import Client
 from pyrogram import filters
@@ -35,6 +37,10 @@ async def answer(client, callback_query):
 @app.on_message(filters.command(["help"]) & filters.private)
 async def helpHandler(client, message):
     await app.send_message(message.chat.id, _("Mamaliga cu mititei infasetei"))
+
+@app.on_message(filters.private)
+async def domainHelper(client, message):
+        await app.send_message(message.chat.id, tldextract.extract(message.text).registered_domain)
 
 
 app.run()
