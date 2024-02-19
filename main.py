@@ -1,6 +1,6 @@
 from bot import app
 from localisation import setLanguage
 
-setLanguage('en')
+setLanguage("en")
 
 app.run()
