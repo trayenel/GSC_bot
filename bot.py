@@ -39,6 +39,9 @@ async def helpHandler(client, message):
 
 @app.on_message(filters.private)
 async def domainHelper(client, message):
-    await app.send_message(
-        message.chat.id, tldextract.extract(message.text).registered_domain
-    )
+    try:
+        await app.send_message(
+            message.chat.id, tldextract.extract(message.text).registered_domain
+        )
+    except:
+        return
