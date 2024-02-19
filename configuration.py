@@ -7,10 +7,15 @@ args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
 config = configparser.ConfigParser()
 file = None
 
-if "-c" in opts:
+if '-h' in opts:
+    print(f"Usage:")
+    raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")
+elif "-c" in opts:
     for arg in args:
         file = open(arg, "r")
     config.read(file.name)
+else:
+    raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")
 
 API_ID = config["TOKENS"]["api_id"]
 API_HASH = config["TOKENS"]["api_hash"]
