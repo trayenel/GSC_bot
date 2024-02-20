@@ -10,7 +10,6 @@ import tldextract
 
 app = Client("botTest", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-
 @app.on_message(filters.command(["start"]) & filters.private)
 async def startHandler(client, message):
     await app.send_message(
@@ -40,8 +39,10 @@ async def helpHandler(client, message):
 @app.on_message(filters.private)
 async def domainHelper(client, message):
     if not validateUrl(message.text):
-        await app.send_message(message.chat.id, "Link is invalid")
+        await app.send_message(message.chat.id, "Unsupported site, select /help to get see what this bot does.")
         return
     await app.send_message(
         message.chat.id, tldextract.extract(message.text).registered_domain
     )
+
+
