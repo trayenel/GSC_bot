@@ -8,8 +8,6 @@ from pyrogram.types import (
 )
 import tldextract
 
-setLanguage('ro')
-
 app = Client(BOT_NAME, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command(["start"]) & filters.private)
