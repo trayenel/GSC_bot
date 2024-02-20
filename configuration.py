@@ -1,8 +1,14 @@
 import configparser
 import sys
+import validators
 
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 args = [arg for arg in sys.argv[1:] if not arg.startswith("-")]
+
+def validateUrl(url):
+    if validators.domain(url) or validators.url(url):
+        return True
+    return False
 
 config = configparser.ConfigParser()
 file = None
@@ -11,8 +17,7 @@ if '-h' in opts:
     print(f"Usage:")
     raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")
 elif "-c" in opts:
-    for arg in args:
-        file = open(arg, "r")
+    file = open(args[-1], "r")
     config.read(file.name)
 else:
     raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")

@@ -1,4 +1,4 @@
-from configuration import API_ID, API_HASH, BOT_TOKEN
+from configuration import API_ID, API_HASH, BOT_TOKEN, validateUrl
 from pyrogram import Client
 from pyrogram import filters
 from pyrogram.types import (
@@ -39,9 +39,9 @@ async def helpHandler(client, message):
 
 @app.on_message(filters.private)
 async def domainHelper(client, message):
-    try:
-        await app.send_message(
-            message.chat.id, tldextract.extract(message.text).registered_domain
-        )
-    except:
+    if not validateUrl(message.text):
+        await app.send_message(message.chat.id, "Link is invalid")
         return
+    await app.send_message(
+        message.chat.id, tldextract.extract(message.text).registered_domain
+    )
