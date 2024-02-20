@@ -1,4 +1,5 @@
 import configparser
+import logging
 import sys
 import validators
 
@@ -23,10 +24,11 @@ elif "-c" in opts:
         file = open(args[-1], "r")
         config.read(file.name)
     except FileNotFoundError:
-        raise SystemExit(f"Invalid specified file")
+        logging.error("Config file not found.")
+        raise SystemExit
     except configparser.MissingSectionHeaderError or configparser.NoOptionError:
-        raise SystemExit(f"The specified config file is invalid")
-
+        logging.error(f"The specified config file is invalid")
+        raise SystemExit
 
 else:
     raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")
@@ -34,3 +36,4 @@ else:
 API_ID = config["TOKENS"]["api_id"]
 API_HASH = config["TOKENS"]["api_hash"]
 BOT_TOKEN = config["TOKENS"]["bot_token"]
+BOT_NAME = config["NAME"]["bot_name"]

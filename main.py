@@ -1,3 +1,5 @@
+import logging
+
 from pyrogram.errors import ApiIdInvalid
 
 from bot import app
@@ -8,4 +10,5 @@ setLanguage("en")
 try:
     app.run()
 except ApiIdInvalid as e:
-    print(e.MESSAGE)
+    logging.error(e.MESSAGE, 'Error Authenticating')
+    raise SystemExit

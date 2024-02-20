@@ -1,4 +1,4 @@
-from configuration import API_ID, API_HASH, BOT_TOKEN, validateUrl
+from configuration import API_ID, API_HASH, BOT_TOKEN,BOT_NAME, validateUrl
 from pyrogram import Client
 from pyrogram import filters
 from pyrogram.types import (
@@ -8,7 +8,7 @@ from pyrogram.types import (
 )
 import tldextract
 
-app = Client("botTest", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+app = Client(BOT_NAME, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 @app.on_message(filters.command(["start"]) & filters.private)
 async def startHandler(client, message):
