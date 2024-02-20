@@ -40,6 +40,7 @@ async def startHandler(client, message):
 async def answer(client, callback_query):
     setLanguage(callback_query.data)
 
+
 @app.on_message(filters.private)
 async def domainHelper(client, message):
     if not validateUrl(message.text):

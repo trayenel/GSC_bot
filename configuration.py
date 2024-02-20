@@ -52,7 +52,7 @@ def setLanguage(language):
         appname, localedir, fallback=True, languages=[language.strip()]
     ).install()
 
-setLanguage('en')
+setLanguage('ru')
 
 START_MESSAGE = _(f"""
 Привет! 👋
