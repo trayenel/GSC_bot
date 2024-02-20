@@ -17,20 +17,23 @@ config = configparser.ConfigParser()
 file = None
 
 if "-h" in opts:
-    print(f"Usage:")
-    raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")
+    logging.error(f"Usage: {sys.argv[0]} [OPTIONS]")
+    logging.error("-c, --config FILE    Specify a configuration file.")
+    logging.error("-h, --help           Show this message and exit.")
+    raise SystemExit
 elif "-c" in opts:
     try:
         file = open(args[-1], "r")
         config.read(file.name)
-    except FileNotFoundError:
+    except (FileNotFoundError, IndexError):
         logging.error("Config file not found.")
         raise SystemExit
-    except configparser.MissingSectionHeaderError or configparser.NoOptionError:
+    except (configparser.MissingSectionHeaderError, configparser.NoOptionError):
         logging.error(f"The specified config file is invalid")
         raise SystemExit
 
 else:
+    logging.error('Invalid option')
     raise SystemExit(f"Usage {sys.argv[0]} (-c | -h) <arguments>...")
 
 API_ID = config["TOKENS"]["api_id"]

@@ -1,4 +1,5 @@
 from configuration import API_ID, API_HASH, BOT_TOKEN,BOT_NAME, validateUrl
+from localisation import setLanguage
 from pyrogram import Client
 from pyrogram import filters
 from pyrogram.types import (
@@ -7,6 +8,8 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 import tldextract
+
+setLanguage("en")
 
 app = Client(BOT_NAME, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
