@@ -20,7 +20,7 @@ except (configparser.MissingSectionHeaderError, configparser.NoOptionError):
     raise SystemExit
 
 try:
-    app = login(
+    login(
         config["NAME"]["BOT_NAME"],
         config["TOKENS"]["API_ID"],
         config["TOKENS"]["API_HASH"],

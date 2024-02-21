@@ -1,4 +1,4 @@
-from helper_functions import validateUrl, setLanguage
+from helper_functions import validateUrl, setLanguage, extractUrl
 from lang_constants import START_MESSAGE, HELP_MESSAGE
 from pyrogram import Client
 from pyrogram import filters
@@ -7,7 +7,6 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-import tldextract
 
 
 def login(name, API_ID, API_HASH, BOT_TOKEN):
@@ -22,7 +21,7 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
         await app.send_message(message.chat.id, _(HELP_MESSAGE))
 
     @app.on_message(filters.command(["lang"]) & filters.private)
-    async def startHandler(client, message):
+    async def langHandler(client, message):
         await app.send_message(
             message.chat.id,
             "Lang",
@@ -42,7 +41,7 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
         setLanguage(callback_query.data)
 
     @app.on_message(filters.private)
-    async def domainHelper(client, message):
+    async def domainHandler(client, message):
         if not validateUrl(message.text):
             await app.send_message(
                 message.chat.id,
@@ -50,7 +49,7 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
             )
             return
         await app.send_message(
-            message.chat.id, tldextract.extract(message.text).registered_domain
+            message.chat.id, extractUrl(message.text)
         )
 
     return app

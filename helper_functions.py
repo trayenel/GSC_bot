@@ -1,14 +1,12 @@
 import validators
 import gettext
 import argparse
-
-appname = "SR2_bot"
-localedir = "./locales"
+import tldextract
 
 
 def setLanguage(language):
     gettext.translation(
-        appname, localedir, fallback=True, languages=[language.strip()]
+        "SR2_bot", "./locales", fallback=True, languages=[language.strip()]
     ).install()
 
 
@@ -16,6 +14,10 @@ def validateUrl(url):
     if validators.domain(url) or validators.url(url):
         return True
     return False
+
+
+def extractUrl(url):
+    tldextract.extract(url).registered_domain
 
 
 def init_argparse() -> argparse.ArgumentParser:
