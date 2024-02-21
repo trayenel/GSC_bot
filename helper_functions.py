@@ -1,7 +1,6 @@
 import validators
 import gettext
 import argparse
-import sys
 
 appname = "SR2_bot"
 localedir = "./locales"
