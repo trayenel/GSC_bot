@@ -10,7 +10,7 @@ logger = logging.getLogger("SR2_bot")
 args = init_argparse().parse_args()
 
 try:
-    with open(args.filename) as configFile:
+    with open(args.file) as configFile:
         config.read(configFile.name)
 except FileNotFoundError:
     logging.error("Config file not found.")
