@@ -9,19 +9,17 @@ from pyrogram.types import (
 )
 import tldextract
 
+
 def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
-
 
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
         await app.send_message(message.chat.id, _(START_MESSAGE))
 
-
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
         await app.send_message(message.chat.id, _(HELP_MESSAGE))
-
 
     @app.on_message(filters.command(["lang"]) & filters.private)
     async def startHandler(client, message):
@@ -39,20 +37,20 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
             ),
         )
 
-
     @app.on_callback_query()
     async def answer(client, callback_query):
         setLanguage(callback_query.data)
-
 
     @app.on_message(filters.private)
     async def domainHelper(client, message):
         if not validateUrl(message.text):
             await app.send_message(
-                message.chat.id, "Unsupported site, select /help to see what this bot does."
+                message.chat.id,
+                "Unsupported site, select /help to see what this bot does.",
             )
             return
         await app.send_message(
             message.chat.id, tldextract.extract(message.text).registered_domain
         )
+
     return app
