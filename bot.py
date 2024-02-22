@@ -1,7 +1,7 @@
 from helper_functions import validateUrl, setLanguage, extractUrl
+import logging
 from lang_constants import START_MESSAGE, HELP_MESSAGE, URL_ERR_MESSAGE
-from pyrogram import Client
-from pyrogram import filters
+from pyrogram import Client, filters, idle
 from pyrogram.types import (
     ReplyKeyboardMarkup,
     InlineKeyboardMarkup,
@@ -9,7 +9,8 @@ from pyrogram.types import (
 )
 
 
-def login(name, API_ID, API_HASH, BOT_TOKEN):
+
+async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
     @app.on_message(filters.command(["start"]) & filters.private)
@@ -50,4 +51,11 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
             return
         await app.send_message(message.chat.id, extractUrl(message.text))
 
-    return app
+    await app.start()
+
+    logging.getLogger("SR2_bot").info("Auth successful")
+
+    await idle()
+
+    await app.stop()
+
