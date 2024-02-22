@@ -27,5 +27,5 @@ def init_argparse() -> argparse.ArgumentParser:
         description="Start telegram bot.",
     )
     parser.add_argument("file")
-    parser.add_argument("-c", "--config", action="store_true", help="Load configuration file", required=True)
+    parser.add_argument("-c", "--config", action="store_true", help="load configuration file", required=True)
     return parser

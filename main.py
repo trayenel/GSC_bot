@@ -1,6 +1,7 @@
 import pyrogram.errors
 import logging
 import configparser
+import asyncio
 from bot import login
 from helper_functions import init_argparse
 
@@ -23,12 +24,12 @@ except (configparser.MissingSectionHeaderError, configparser.NoOptionError):
 
 try:
     logger.info("Application is starting.")
-    login(
+    asyncio.run(login(
         config["NAME"]["BOT_NAME"],
         config["TOKENS"]["API_ID"],
         config["TOKENS"]["API_HASH"],
         config["TOKENS"]["BOT_TOKEN"],
-    ).run()
+    ).run())
 except (pyrogram.errors.ApiIdInvalid, pyrogram.errors.PhoneNumberInvalid) as e:
     logger.error(f"Error authenticating: {e.MESSAGE}.")
     raise SystemExit
