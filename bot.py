@@ -1,5 +1,5 @@
 from helper_functions import validateUrl, setLanguage, extractUrl
-from lang_constants import START_MESSAGE, HELP_MESSAGE
+from lang_constants import START_MESSAGE, HELP_MESSAGE, URL_ERR_MESSAGE
 from pyrogram import Client
 from pyrogram import filters
 from pyrogram.types import (
@@ -45,7 +45,7 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
         if not validateUrl(message.text):
             await app.send_message(
                 message.chat.id,
-                "Unsupported site, select /help to see what this bot does.",
+                _(URL_ERR_MESSAGE),
             )
             return
         await app.send_message(message.chat.id, extractUrl(message.text))

@@ -1,7 +1,6 @@
 import pyrogram.errors
 import logging
 import configparser
-import asyncio
 from bot import login
 from helper_functions import init_argparse
 
@@ -9,7 +8,9 @@ logger = logging.getLogger("SR2_bot")
 config = configparser.ConfigParser()
 args = init_argparse().parse_args()
 
-logging.basicConfig(level=logging.CRITICAL)
+logging.basicConfig(level=logging.INFO)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
+logging.getLogger("root").setLevel(logging.ERROR)
 logger.setLevel(logging.INFO)
 
 try:
@@ -24,12 +25,14 @@ except (configparser.MissingSectionHeaderError, configparser.NoOptionError):
 
 try:
     logger.info("Application is starting.")
-    asyncio.run(login(
+    login(
         config["NAME"]["BOT_NAME"],
         config["TOKENS"]["API_ID"],
         config["TOKENS"]["API_HASH"],
         config["TOKENS"]["BOT_TOKEN"],
-    ).run())
+    ).run()
+    print('')
+    logger.info("You have exited gracefully using Ctrl-C.")
 except (pyrogram.errors.ApiIdInvalid, pyrogram.errors.PhoneNumberInvalid) as e:
     logger.error(f"Error authenticating: {e.MESSAGE}.")
     raise SystemExit

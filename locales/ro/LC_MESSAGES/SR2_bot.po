@@ -12,12 +12,12 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: configuration.py:57
+#: lang_constants.py:6
 msgid ""
 "\n"
 "Привет! 👋\n"
@@ -34,7 +34,8 @@ msgstr ""
 "articol de pe un site de știri blocat.\n"
 "\n"
 "Trimiteți-mi link-ul pe care doriți să-l împărtășiți.\n"
-#: configuration.py:65
+
+#: lang_constants.py:16
 msgid ""
 "\n"
 "Данный бот создан для того, чтобы вы могли безпрепятственно делиться "
@@ -51,3 +52,8 @@ msgstr ""
 "Pentru a obține un link funcțional către un articol sau știre, trimiteți botului un link "
 "către un articol de pe unul dintre site-urile media blocate. \n"
 "\n"
+
+#: lang_constants.py:24
+msgid ""
+"Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
+msgstr "Site nesuportat, selectați /help pentru a vedea ce face acest robot."

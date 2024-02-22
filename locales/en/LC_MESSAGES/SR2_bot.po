@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: configuration.py:57
+#: lang_constants.py:6
 msgid ""
 "\n"
 "Привет! 👋\n"
@@ -34,7 +34,8 @@ msgstr ""
 "story from a blocked news site.\n"
 "\n"
 "Send me the link you want to share.\n"
-#: configuration.py:65
+
+#: lang_constants.py:16
 msgid ""
 "\n"
 "Данный бот создан для того, чтобы вы могли безпрепятственно делиться "
@@ -51,3 +52,8 @@ msgstr ""
 "To get a working link to an article or news story, send the bot a link "
 "to an article from one of the blocked media sites. \n"
 "\n"
+
+#: lang_constants.py:24
+msgid ""
+"Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
+msgstr "Unsupported site, select /help to see what this bot does."

@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-20 19:46+0200\n"
+"POT-Creation-Date: 2024-02-22 12:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: configuration.py:57
+#: lang_constants.py:6
 msgid ""
 "\n"
 "Привет! 👋\n"
@@ -28,7 +28,7 @@ msgid ""
 "Отправьте мне ссылку, которой хотите поделиться.\n"
 msgstr ""
 
-#: configuration.py:65
+#: lang_constants.py:16
 msgid ""
 "\n"
 "Данный бот создан для того, чтобы вы могли безпрепятственно делиться "
@@ -37,4 +37,9 @@ msgid ""
 "Чтобы получить рабочую ссылку на статью или новость, отправьте боту ссылку "
 "на статью с одного из сайтов заблокированного СМИ.\n"
 "\n"
+msgstr ""
+
+#: lang_constants.py:24
+msgid ""
+"Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
 msgstr ""
