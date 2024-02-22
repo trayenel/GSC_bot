@@ -9,7 +9,6 @@ from pyrogram.types import (
 )
 
 
-
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -58,4 +57,3 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     await idle()
 
     await app.stop()
-
