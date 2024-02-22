@@ -23,8 +23,9 @@ def extractUrl(url):
 def init_argparse() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
-        usage="%(prog)s [FILE]",
+        usage="%(prog)s -c [FILE]",
         description="Start telegram bot.",
     )
     parser.add_argument("file")
+    parser.add_argument("-c", "--config", action="store_true", help="Load configuration file", required=True)
     return parser

@@ -48,8 +48,6 @@ def login(name, API_ID, API_HASH, BOT_TOKEN):
                 "Unsupported site, select /help to see what this bot does.",
             )
             return
-        await app.send_message(
-            message.chat.id, extractUrl(message.text)
-        )
+        await app.send_message(message.chat.id, extractUrl(message.text))
 
     return app

@@ -4,10 +4,12 @@ import configparser
 from bot import login
 from helper_functions import init_argparse
 
-
-config = configparser.ConfigParser()
 logger = logging.getLogger("SR2_bot")
+config = configparser.ConfigParser()
 args = init_argparse().parse_args()
+
+logging.basicConfig(level=logging.CRITICAL)
+logger.setLevel(logging.INFO)
 
 try:
     with open(args.file) as configFile:
@@ -20,6 +22,7 @@ except (configparser.MissingSectionHeaderError, configparser.NoOptionError):
     raise SystemExit
 
 try:
+    logger.info("Application is starting.")
     login(
         config["NAME"]["BOT_NAME"],
         config["TOKENS"]["API_ID"],
