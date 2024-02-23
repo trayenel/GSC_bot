@@ -1,0 +1,13 @@
+[Unit]
+Description=Telegram bot starter
+
+[Service]
+User=root
+WorkingDirectory=/path_to/SR2_bot
+ExecStart= /path_to_your_venv/bin/python path/to/app.py -c config.txt
+# optional items below
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
