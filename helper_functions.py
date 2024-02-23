@@ -17,7 +17,7 @@ def validateUrl(url):
 
 
 def extractUrl(url):
-    tldextract.extract(url).registered_domain
+    return tldextract.extract(url).registered_domain
 
 
 def init_argparse() -> argparse.ArgumentParser:
