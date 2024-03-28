@@ -24,3 +24,7 @@ HELP_MESSAGE = _(
 URL_ERR_MESSAGE = _(
     "Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
 )
+
+REPORT_MESSAGE = _(
+    "asdadsads."
+)
