@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-20 19:46+0200\n"
+"POT-Creation-Date: 2024-03-29 11:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,12 +20,13 @@ msgstr ""
 #: lang_constants.py:6
 msgid ""
 "\n"
-"Привет! 👋\n"
+"Hello! 👋\n"
 "\n"
-"Я бот, который поможет вам сгенерировать рабочую ссылку на новость или "
-"статью с сайта заблокированного СМИ.\n"
+"I'm a bot that will help you generate a working link to a news article or "
+"story from a blocked news site.\n"
 "\n"
-"Отправьте мне ссылку, которой хотите поделиться.\n"
+"Send me the link you want to share.\n"
+"\n"
 msgstr ""
 "\n"
 "Salut! 👋\n"
@@ -35,14 +36,15 @@ msgstr ""
 "\n"
 "Trimiteți-mi link-ul pe care doriți să-l împărtășiți.\n"
 
-#: lang_constants.py:16
+#: lang_constants.py:17
 msgid ""
 "\n"
-"Данный бот создан для того, чтобы вы могли безпрепятственно делиться "
-"ссылками с заблокированных в России сайтов СМИ.\n"
+"This bot is designed to allow you to freely share links from media sites "
+"blocked in Russia.\n"
 "\n"
-"Чтобы получить рабочую ссылку на статью или новость, отправьте боту ссылку "
-"на статью с одного из сайтов заблокированного СМИ.\n"
+"To get a working link to an article or news story, send the bot a link to an "
+"article from one of the blocked media sites or select Report to report a "
+"broken link.\n"
 "\n"
 msgstr ""
 "\n"
@@ -53,7 +55,22 @@ msgstr ""
 "către un articol de pe unul dintre site-urile media blocate. \n"
 "\n"
 
-#: lang_constants.py:24
-msgid ""
-"Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
+#: lang_constants.py:26
+msgid "Unsupported site, select /help to see what this bot does."
 msgstr "Site nesuportat, selectați /help pentru a vedea ce face acest robot."
+
+#: lang_constants.py:29
+msgid "Link will be reported."
+msgstr ""
+
+#: lang_constants.py:31
+msgid "Link will not be reported."
+msgstr ""
+
+#: lang_constants.py:33
+msgid "Yes"
+msgstr "Da"
+
+#: lang_constants.py:35
+msgid "No"
+msgstr "Nu"

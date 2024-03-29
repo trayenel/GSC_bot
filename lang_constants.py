@@ -1,30 +1,37 @@
 from helper_functions import setLanguage
 
-setLanguage("ru")
+setLanguage("en")
 
 START_MESSAGE = _(
     f"""
-Привет! 👋
+Hello! 👋
 
-Я бот, который поможет вам сгенерировать рабочую ссылку на новость или статью с сайта заблокированного СМИ.
+I'm a bot that will help you generate a working link to a news article or story from a blocked news site.
 
-Отправьте мне ссылку, которой хотите поделиться.
+Send me the link you want to share.
+
 """
 )  # noqa: E501
 
 HELP_MESSAGE = _(
     f"""
-Данный бот создан для того, чтобы вы могли безпрепятственно делиться ссылками с заблокированных в России сайтов СМИ.
+This bot is designed to allow you to freely share links from media sites blocked in Russia.
 
-Чтобы получить рабочую ссылку на статью или новость, отправьте боту ссылку на статью с одного из сайтов заблокированного СМИ.
+To get a working link to an article or news story, send the bot a link to an article from one of the blocked media sites or select Report to report a broken link.
 
 """
 )
 
 URL_ERR_MESSAGE = _(
-    "Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
+    "Unsupported site, select /help to see what this bot does."
 )
 
-REPORT_MESSAGE = _(
-    "asdadsads."
-)
+REPORT_TRUE = _('Link will be reported.')
+
+REPORT_FALSE = _('Link will not be reported.')
+
+YES_MSG = _('Yes')
+
+NO_MSG = _('No')
+
+REPORT_MSG = _(f"The following URL will be reported. Proceed?")

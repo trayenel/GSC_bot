@@ -1,6 +1,14 @@
 from helper_functions import validateUrl, setLanguage, extractUrl
 import logging
-from lang_constants import START_MESSAGE, HELP_MESSAGE, URL_ERR_MESSAGE, REPORT_MESSAGE
+from lang_constants import (
+    START_MESSAGE,
+    HELP_MESSAGE,
+    URL_ERR_MESSAGE,
+    REPORT_TRUE,
+    REPORT_FALSE,
+    YES_MSG,
+    NO_MSG,
+)
 from pyrogram import Client, filters, idle
 from pyrogram.types import (
     ReplyKeyboardMarkup,
@@ -8,12 +16,11 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
+lastLink = None
+
+
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
-
-    @app.on_message(filters.command(["start"]) & filters.private)
-    async def startHandler(client, message):
-        await app.send_message(message.chat.id, _(START_MESSAGE))
 
     @app.on_message(filters.command(["lang"]) & filters.private)
     async def langHandler(client, message):
@@ -30,21 +37,18 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 ]
             ),
         )
-
-    @app.on_callback_query()
-    async def answer(client, callback_query):
-        setLanguage(callback_query.data)
+        return
 
     @app.on_message(filters.command(["report"]) & filters.private)
     async def reportLink(client, message):
         await app.send_message(
             message.chat.id,
-            _("The following URL will be reported: last msg. Proceed?"),
+            "aaa",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(_('Yes'), callback_data="yes"),
-                        InlineKeyboardButton(_('No'), callback_data="no"),
+                        InlineKeyboardButton(_(YES_MSG), callback_data="yes"),
+                        InlineKeyboardButton(_(NO_MSG), callback_data="no"),
                     ]
                 ]
             ),
@@ -52,14 +56,22 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_callback_query()
     async def answer(client, callback_query):
-        if callback_query.data === 'no':
-            async def reportFalse(client, message):
-                await app.send_message(message.chat.id, '_(Link will not be reported)')
+        if callback_query.data == "yes":
+            await callback_query.answer(_(REPORT_TRUE), show_alert=True)
             return
-        else:
-            async def reportTrue(client, message):
-                await app.send_message(message.chat.id, '_(Link will be reported)')
-            return
+        if callback_query.data == "no":
+            await callback_query.answer(_(REPORT_FALSE), show_alert=True)
+        setLanguage(callback_query.data)
+        return
+
+    @app.on_message(filters.command(["start"]) & filters.private)
+    async def startHandler(client, message):
+        await app.send_message(message.chat.id, _(START_MESSAGE))
+
+    @app.on_message(filters.command(["help"]) & filters.private)
+    async def helpHandler(client, message):
+        await app.send_message(message.chat.id, _(HELP_MESSAGE))
+
     @app.on_message(filters.private)
     async def domainHandler(client, message):
         if not validateUrl(message.text):
