@@ -11,7 +11,6 @@ from lang_constants import (
 )
 from pyrogram import Client, filters, idle
 from pyrogram.types import (
-    ReplyKeyboardMarkup,
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
