@@ -16,7 +16,7 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
-lastLink = None
+lastLink = {}
 
 
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
@@ -47,7 +47,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(_(YES_MSG), callback_data="yes"),
+                        InlineKeyboardButton(_(YES_MSG), callback_data='yes'),
                         InlineKeyboardButton(_(NO_MSG), callback_data="no"),
                     ]
                 ]
@@ -56,8 +56,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_callback_query()
     async def answer(client, callback_query):
-        if callback_query.data == "yes":
+        if callback_query.data == 'yes':
             await callback_query.answer(_(REPORT_TRUE), show_alert=True)
+            print(lastLink[callback_query.from_user.id])
             return
         if callback_query.data == "no":
             await callback_query.answer(_(REPORT_FALSE), show_alert=True)
@@ -80,6 +81,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 _(URL_ERR_MESSAGE),
             )
             return
+        lastLink[message.chat.id] = message.text
         await app.send_message(message.chat.id, extractUrl(message.text))
 
     await app.start()
