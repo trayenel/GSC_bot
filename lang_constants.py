@@ -34,4 +34,5 @@ YES_MSG = _('Yes')
 
 NO_MSG = _('No')
 
-REPORT_MSG = _(f"The following URL will be reported. Proceed?")
+REPORT_MSG = _(f"Do you want to report the following link:")
+

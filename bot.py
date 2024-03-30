@@ -1,5 +1,6 @@
-from helper_functions import validateUrl, setLanguage, extractUrl
 import logging
+from database import db, cur
+from helper_functions import validateUrl, setLanguage, extractUrl
 from lang_constants import (
     START_MESSAGE,
     HELP_MESSAGE,
@@ -7,6 +8,7 @@ from lang_constants import (
     REPORT_TRUE,
     REPORT_FALSE,
     YES_MSG,
+    REPORT_MSG,
     NO_MSG,
 )
 from pyrogram import Client, filters, idle
@@ -42,22 +44,26 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     async def reportLink(client, message):
         await app.send_message(
             message.chat.id,
-            "aaa",
+            _(REPORT_MSG) + " " + lastLink[message.chat.id] + " ?",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(_(YES_MSG), callback_data='yes'),
+                        InlineKeyboardButton(_(YES_MSG), callback_data="yes"),
                         InlineKeyboardButton(_(NO_MSG), callback_data="no"),
                     ]
                 ]
             ),
-        )
+            )
 
     @app.on_callback_query()
     async def answer(client, callback_query):
-        if callback_query.data == 'yes':
+        if callback_query.data == "yes":
             await callback_query.answer(_(REPORT_TRUE), show_alert=True)
-            print(lastLink[callback_query.from_user.id])
+            cur.execute(
+                """INSERT INTO reportedLinks(chatId, link) VALUES(?, ?)""",
+                (callback_query.from_user.id, lastLink[callback_query.from_user.id]),
+            )
+            db.commit()
             return
         if callback_query.data == "no":
             await callback_query.answer(_(REPORT_FALSE), show_alert=True)
@@ -88,5 +94,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     logging.getLogger("SR2_bot").info("Auth successful")
 
     await idle()
+
+    db.close()
 
     await app.stop()
