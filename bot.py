@@ -1,5 +1,5 @@
 import logging
-from database import db, cur
+from database import Links, session
 from helper_functions import validateUrl, setLanguage, extractUrl
 from lang_constants import (
     START_MESSAGE,
@@ -59,11 +59,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     async def answer(client, callback_query):
         if callback_query.data == "yes":
             await callback_query.answer(_(REPORT_TRUE), show_alert=True)
-            cur.execute(
-                """INSERT INTO reportedLinks(chatId, link) VALUES(?, ?)""",
-                (callback_query.from_user.id, lastLink[callback_query.from_user.id]),
-            )
-            db.commit()
+            session.add(Links(
+                chat_id=callback_query.from_user.id,
+                link=lastLink[callback_query.from_user.id],
+            ))
+            session.commit()
             return
         if callback_query.data == "no":
             await callback_query.answer(_(REPORT_FALSE), show_alert=True)
@@ -95,6 +95,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     await idle()
 
-    db.close()
+    session.close()
 
     await app.stop()

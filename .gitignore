@@ -9,3 +9,4 @@ SR2_bot.iml
 config.txt
 sr2trn_bot.session
 sr2trn_bot.session-journal
+sqlite.db

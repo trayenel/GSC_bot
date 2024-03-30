@@ -1,9 +1,19 @@
-import sqlite3
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
-db = sqlite3.connect('./sqlite.db')
+engine = create_engine('sqlite:///./sqlite.db')
+Session = sessionmaker(bind=engine)
+Base = declarative_base()
 
-cur = db.cursor()
+class Links(Base):
+    __tablename__ = 'reportedLinks'
+    chat_id = Column(Integer, nullable=False)
+    link = Column(String, nullable=False, primary_key=True)
 
-cur.execute('''CREATE TABLE IF NOT EXISTS reportedLinks(chatId INTEGER NOT NULL, link TEXT NOT NULL PRIMARY KEY)''')
+    def __repr__(self):
+        return f"<id(id={self.id}, link={self.link})>"
 
-db.commit()
+Base.metadata.create_all(engine)
+
+session = Session()
