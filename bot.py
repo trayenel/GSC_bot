@@ -1,5 +1,5 @@
 import logging
-from database import Links, session
+from database import upsertLink, session, Links
 from helper_functions import validateUrl, setLanguage, extractUrl
 from lang_constants import (
     START_MESSAGE,
@@ -16,8 +16,6 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-
-lastLink = {}
 
 
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
@@ -59,11 +57,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     async def answer(client, callback_query):
         if callback_query.data == "yes":
             await callback_query.answer(_(REPORT_TRUE), show_alert=True)
-            session.add(Links(
-                chat_id=callback_query.from_user.id,
-                link=lastLink[callback_query.from_user.id],
-            ))
-            session.commit()
+
             return
         if callback_query.data == "no":
             await callback_query.answer(_(REPORT_FALSE), show_alert=True)
@@ -86,7 +80,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 _(URL_ERR_MESSAGE),
             )
             return
-        lastLink[message.chat.id] = message.text
+        upsertLink(Links, message.chat.id, message.text)
+        session.commit()
         await app.send_message(message.chat.id, extractUrl(message.text))
 
     await app.start()
