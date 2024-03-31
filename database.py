@@ -14,7 +14,7 @@ class Links(Base):
     link = Column(String, nullable=False)
 
     def __repr__(self):
-        return f"<id(id={self.id}, link={self.link})>"
+        return f"<id(id={self.chat_id}, link={self.link})>"
 
 Base.metadata.create_all(engine)
 
@@ -25,3 +25,7 @@ def upsertLink(linkTable, message_chat_id, message_text):
     upsert_stmt = insert_stmt.on_conflict_do_update(index_elements=['chat_id'], set_={'link': insert_stmt.excluded.link})
     session.execute(upsert_stmt)
     session.commit()
+
+def selectLink(linkTable, chat_id):
+    link = session.query(linkTable).where(linkTable.chat_id == chat_id)
+    return link[0].link

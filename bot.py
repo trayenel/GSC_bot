@@ -1,5 +1,5 @@
 import logging
-from database import upsertLink, session, Links
+from database import upsertLink, selectLink, session, Links
 from helper_functions import validateUrl, setLanguage, extractUrl
 from lang_constants import (
     START_MESSAGE,
@@ -42,7 +42,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     async def reportLink(client, message):
         await app.send_message(
             message.chat.id,
-            _(REPORT_MSG) + " " + lastLink[message.chat.id] + " ?",
+            _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
