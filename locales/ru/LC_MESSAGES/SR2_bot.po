@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-29 11:08+0200\n"
+"POT-Creation-Date: 2024-03-30 17:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,4 +66,16 @@ msgstr ""
 
 #: lang_constants.py:31
 msgid "Link will not be reported."
+msgstr ""
+
+#: lang_constants.py:33
+msgid "Yes"
+msgstr ""
+
+#: lang_constants.py:35
+msgid "No"
+msgstr ""
+
+#: lang_constants.py:37
+msgid "Do you want to report the following link:"
 msgstr ""
