@@ -32,6 +32,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                         InlineKeyboardButton("🇷🇴", callback_data="ro"),
                         InlineKeyboardButton("🇷🇺", callback_data="ru"),
                         InlineKeyboardButton("🇬🇧", callback_data="en"),
+                        InlineKeyboardButton("🇮🇷", callback_data="fa"),
                     ]
                 ]
             ),
