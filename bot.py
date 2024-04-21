@@ -106,7 +106,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
     async def send_report_menu(client, message, lang):
         _ = get_translation(lang)
-
+        print(lang)
         await app.send_message(
             message.chat.id,
             _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
