@@ -1,6 +1,6 @@
 import logging
 from database import upsertLink, selectLink, session, Links
-from utils import validateUrl, setLanguage, extractUrl, available_locales, get_translation, get_rows
+from utils import validateUrl, extractUrl, available_locales, get_translation, get_rows
 from lang_constants import (
     START_MESSAGE,
     HELP_MESSAGE,
@@ -93,7 +93,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             lang_rows.append(
                 InlineKeyboardButton(
                     text=f'{locales[lang]["full_name"]} ({lang})',
-                    callback_data="welcome:" + lang,
+                    callback_data=lang,
                 )
             )
 

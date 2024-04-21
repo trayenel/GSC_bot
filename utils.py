@@ -5,6 +5,9 @@ import tldextract
 import babel
 from pathlib import Path
 
+_locales_dir = "./locales"
+_domain = "GSC_bot"
+
 def validateUrl(url):
     if validators.domain(url) or validators.url(url):
         return True
@@ -58,29 +61,29 @@ def setup_gettext():
     """
     Setups gettext text domains.
     """
-    gettext.bindtextdomain('SR2_bot', './locales')
-    gettext.textdomain('SR2_bot')
+    gettext.bindtextdomain(_domain, str(_locales_dir))
+    gettext.textdomain(_domain)
 
-def setLanguage(language):
-    gettext.translation(
-        "SR2_bot", "./locales", fallback=True, languages=[language.strip()]
-    ).install()
 
 def _get_available_langs():
     """
     Gets all available/translated languages by searching against babel's list.
     """
-    langs = ['en', 'ro', 'fa']
+    langs = ["en"]
     languages = [*babel.Locale("en").languages, "zh-CN", "zh-TW"]
-
-    for locale in gettext.find('SR2_bot', './locales', languages=languages, all=True):
-        parts = Path(locale).relative_to('/locales').parts
+    for locale in gettext.find(
+            _domain, str(_locales_dir), languages=languages, all=True
+    ):
+        parts = Path(locale).relative_to(str(_locales_dir)).parts
         # Assume there are at least 2 parts
         if len(parts) >= 2:
             langs.append(str(parts[0]))
-
     return langs
 
+
+# TODO: It is likely that some leftover code that was useful when multiple
+# different versions of the Browser with different preinstalled locales existed
+# can be found here.
 def _get_full_names():
     """
     Gets a dictionary of {locale: { full_name, translation }}, where full_name is the
@@ -101,7 +104,7 @@ def _get_full_names():
                 babel_locale
             ),
             "translation": gettext.translation(
-                'SR2_bot', './locales', languages=[locale], fallback=True
+                _domain, str(_locales_dir), languages=[locale], fallback=True
             ),
         }
     return full_length_names
@@ -109,6 +112,7 @@ def _get_full_names():
 
 # This exists so the above two - expensive - functions, only run once on startup.
 available_locales = _get_full_names()
+
 
 def get_translation(locale="en"):
     """
@@ -119,6 +123,6 @@ def get_translation(locale="en"):
         # If language is not translated, let gettext handle it.
         # Usually on start command & custom queries.
         return gettext.translation(
-            'SR2_bot', './locales', languages=[locale], fallback=True
+            _domain, str(_locales_dir), languages=[locale], fallback=True
         ).gettext
     return available_locales[lang]["translation"].gettext
