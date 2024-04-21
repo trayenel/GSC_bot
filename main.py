@@ -3,7 +3,9 @@ import logging
 import configparser
 import asyncio
 from bot import login
-from helper_functions import init_argparse
+from utils import init_argparse, setup_gettext
+
+setup_gettext()
 
 loop = asyncio.get_event_loop()
 logger = logging.getLogger("SR2_bot")
