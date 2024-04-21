@@ -1,6 +1,12 @@
 import logging
 from database import upsertLink, selectLink, session, Links
-from utils import validateUrl, extractUrl, available_locales, get_translation, get_rows, setLanguage
+from utils import (
+    validateUrl,
+    extractUrl,
+    available_locales,
+    get_rows,
+    setLanguage,
+)
 from lang_constants import (
     START_MESSAGE,
     HELP_MESSAGE,
@@ -27,8 +33,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(_('Yes'), callback_data="yes"),
-                        InlineKeyboardButton(_('No'), callback_data="no"),
+                        InlineKeyboardButton(_("Yes"), callback_data="yes"),
+                        InlineKeyboardButton(_("No"), callback_data="no"),
                     ]
                 ]
             ),
@@ -68,7 +74,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
-        _ = get_translation(user_lang)
 
         lang_rows = []
         locales = available_locales
@@ -109,7 +114,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             text=_(START_MESSAGE),
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton(change_lang_button_label, "change_lang:" + lang)],
+                    [
+                        InlineKeyboardButton(
+                            change_lang_button_label, "change_lang:" + lang
+                        )
+                    ],
                 ]
             ),
         )
@@ -122,11 +131,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if callback_query.data == "no":
             return await callback_query.answer(_(REPORT_FALSE), show_alert=True)
 
-        if callback_query.data.split(":")[0] == 'change_lang':
-            return await send_language_menu(client, callback_query.message.chat.id, callback_query.data.split(":")[1])
+        if callback_query.data.split(":")[0] == "change_lang":
+            return await send_language_menu(
+                client,
+                callback_query.message.chat.id,
+                callback_query.data.split(":")[1],
+            )
 
         setLanguage(callback_query.data)
-        return await send_welcome_message(client, callback_query.from_user.id, callback_query.data)
+        return await send_welcome_message(
+            client, callback_query.from_user.id, callback_query.data
+        )
 
     await app.start()
 

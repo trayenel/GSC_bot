@@ -8,6 +8,7 @@ from pathlib import Path
 _locales_dir = "./locales"
 _domain = "GSC_bot"
 
+
 def validateUrl(url):
     if validators.domain(url) or validators.url(url):
         return True
@@ -34,6 +35,7 @@ def init_argparse() -> argparse.ArgumentParser:
     )
     return parser
 
+
 def get_rows(buttons, items_per_row):
     """
     get_rows splits the buttons list into
@@ -57,6 +59,7 @@ def get_rows(buttons, items_per_row):
 
     return result
 
+
 def setup_gettext():
     """
     Setups gettext text domains.
@@ -69,7 +72,7 @@ def _get_available_langs():
     """
     Gets all available/translated languages by searching against babel's list.
     """
-    langs = ["en", 'ru','fa','ro']
+    langs = ["en", "ru", "fa", "ro"]
     languages = [*babel.Locale("en").languages, "zh-CN", "zh-TW"]
     for locale in gettext.find(
             _domain, str(_locales_dir), languages=languages, all=True
@@ -113,19 +116,6 @@ def _get_full_names():
 # This exists so the above two - expensive - functions, only run once on startup.
 available_locales = _get_full_names()
 
-
-def get_translation(locale="en"):
-    """
-    Gets the gettext#translation of the locale.
-    """
-    lang = locale.lower()
-    if lang not in available_locales.keys():
-        # If language is not translated, let gettext handle it.
-        # Usually on start command & custom queries.
-        return gettext.translation(
-            _domain, str(_locales_dir), languages=[locale], fallback=True
-        ).gettext
-    return available_locales[lang]["translation"].gettext
 
 def setLanguage(language):
     gettext.translation(
