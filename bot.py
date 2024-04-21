@@ -47,8 +47,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         locales = available_locales.keys()
 
-        # await send_welcome_message(client, message.from_user.id, user_lang)
-
         return await send_language_menu(client, message.chat.id, user_lang)
 
     @app.on_message(filters.command(["help"]) & filters.private)
@@ -124,7 +122,12 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if callback_query.data == "no":
             return await callback_query.answer(_(REPORT_FALSE), show_alert=True)
 
+        if callback_query.data.split(":")[0] == 'change_lang':
+            return await send_language_menu(client, callback_query.message.chat.id, callback_query.data.split(":")[1])
+
         setLanguage(callback_query.data)
+        return await send_welcome_message(client, callback_query.from_user.id, callback_query.data)
+
 
     await app.start()
 
