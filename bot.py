@@ -25,22 +25,6 @@ from pyrogram.types import (
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-    async def reportLink(client, message, lang):
-        _ = get_translation(lang)
-
-        await app.send_message(
-            message.chat.id,
-            _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(_("Yes"), "yes:" + lang),
-                        InlineKeyboardButton(_("No"), "no:" + lang),
-                    ]
-                ]
-            ),
-            )
-
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
         user_lang = getUserLang(message)
@@ -120,11 +104,25 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 ]
             ),
         )
+    async def send_report_menu(client, message, lang):
+        _ = get_translation(lang)
 
+        await app.send_message(
+            message.chat.id,
+            _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(_("Yes"), "yes:" + lang),
+                        InlineKeyboardButton(_("No"), "no:" + lang),
+                    ]
+                ]
+            ),
+            )
     @app.on_callback_query()
     async def answer(client, callback_query):
         if callback_query.data.split(':')[0] == "report":
-            return await reportLink(client, callback_query.message, callback_query.data.split(':')[1])
+            return await send_report_menu(client, callback_query.message, callback_query.data.split(':')[1])
 
         if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
