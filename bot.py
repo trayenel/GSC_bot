@@ -1,6 +1,6 @@
 import logging
 from database import upsertLink, selectLink, session, Links
-from utils import validateUrl, extractUrl, available_locales, get_translation, get_rows
+from utils import validateUrl, extractUrl, available_locales, get_translation, get_rows, setLanguage
 from lang_constants import (
     START_MESSAGE,
     HELP_MESSAGE,
@@ -33,17 +33,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             ),
             )
 
-    @app.on_callback_query()
-    async def answer(client, callback_query):
-        if callback_query.data == "yes":
-            await callback_query.answer(_(REPORT_TRUE), show_alert=True)
-
-            return
-        if callback_query.data == "no":
-            await callback_query.answer(_(REPORT_FALSE), show_alert=True)
-        setLanguage(callback_query.data)
-        return
-
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
         user = message.from_user
@@ -58,10 +47,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         locales = available_locales.keys()
 
-        if user_lang != "en" and user_lang in locales:
-            return await send_welcome_message(client, message.from_user.id, user_lang)
+        # await send_welcome_message(client, message.from_user.id, user_lang)
 
-        await send_language_menu(client, message.chat.id, user_lang)
+        return await send_language_menu(client, message.chat.id, user_lang)
 
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
@@ -85,7 +73,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         lang_rows = []
         locales = available_locales
-        print(locales)
+
         # The sort function is being used to reorder the list so user.language_code
         # is the first button, in a way to make it easier for the user to pick
         # their language if Telegram returned the correct one.
@@ -127,6 +115,16 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 ]
             ),
         )
+
+    @app.on_callback_query()
+    async def answer(client, callback_query):
+        if callback_query.data == "yes":
+            return await callback_query.answer(_(REPORT_TRUE), show_alert=True)
+
+        if callback_query.data == "no":
+            return await callback_query.answer(_(REPORT_FALSE), show_alert=True)
+
+        setLanguage(callback_query.data)
 
     await app.start()
 
