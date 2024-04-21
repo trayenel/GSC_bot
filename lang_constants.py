@@ -1,6 +1,6 @@
-from utils import setLanguage
+from utils import get_translation
 
-setLanguage('en')
+_ = get_translation()
 
 START_MESSAGE = _(f"""
 Hello! 👋

@@ -5,7 +5,7 @@ from utils import (
     extractUrl,
     available_locales,
     get_rows,
-    setLanguage,
+    get_translation,
 )
 from lang_constants import (
     START_MESSAGE,
@@ -74,6 +74,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
+        _ = get_translation(user_lang)
 
         lang_rows = []
         locales = available_locales
@@ -100,6 +101,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_message(client: Client, user_id: int, lang: str):
+        _ = get_translation(lang)
+
         bot_name = _("GSC_Bot")
 
         # If lang is English, label = 'Change Language 🌐'
@@ -138,7 +141,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 callback_query.data.split(":")[1],
             )
 
-        setLanguage(callback_query.data)
         return await send_welcome_message(
             client, callback_query.from_user.id, callback_query.data
         )
