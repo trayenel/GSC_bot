@@ -129,3 +129,15 @@ def get_translation(locale="en"):
             _domain, str(_locales_dir), languages=[locale], fallback=True
         ).gettext
     return available_locales[lang]["translation"].gettext
+
+def getUserLang(message):
+    user = message.from_user
+    if not user:
+        return None
+
+    user_lang = user.language_code
+    if user_lang is None:
+        user_lang = "en"
+    else:
+        user_lang = user_lang.lower()
+    return user_lang

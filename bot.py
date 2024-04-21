@@ -5,7 +5,7 @@ from utils import (
     extractUrl,
     available_locales,
     get_rows,
-    get_translation,
+    get_translation, getUserLang
 )
 from lang_constants import (
     START_MESSAGE,
@@ -25,16 +25,17 @@ from pyrogram.types import (
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-    @app.on_message(filters.command(["report"]) & filters.private)
-    async def reportLink(client, message):
+    async def reportLink(client, message, lang):
+        _ = get_translation(lang)
+
         await app.send_message(
             message.chat.id,
             _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(_("Yes"), callback_data="yes"),
-                        InlineKeyboardButton(_("No"), callback_data="no"),
+                        InlineKeyboardButton(_("Yes"), "yes:" + lang),
+                        InlineKeyboardButton(_("No"), "no:" + lang),
                     ]
                 ]
             ),
@@ -42,15 +43,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
-        user = message.from_user
-        if not user:
-            return None
-
-        user_lang = user.language_code
-        if user_lang is None:
-            user_lang = "en"
-        else:
-            user_lang = user_lang.lower()
+        user_lang = getUserLang(message)
 
         locales = available_locales.keys()
 
@@ -121,17 +114,24 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                         InlineKeyboardButton(
                             change_lang_button_label, "change_lang:" + lang
                         )
-                    ],
+                    ], [InlineKeyboardButton(
+                    _('Report'), "report:" + lang
+                )]
                 ]
             ),
         )
 
     @app.on_callback_query()
     async def answer(client, callback_query):
-        if callback_query.data == "yes":
+        if callback_query.data.split(':')[0] == "report":
+            return await reportLink(client, callback_query.message, callback_query.data.split(':')[1])
+
+        if callback_query.data.split(":")[0] == "yes":
+            _ = get_translation(callback_query.data.split(':')[1])
             return await callback_query.answer(_(REPORT_TRUE), show_alert=True)
 
-        if callback_query.data == "no":
+        if callback_query.data.split(":")[0] == "no":
+            _ = get_translation(callback_query.data.split(':')[1])
             return await callback_query.answer(_(REPORT_FALSE), show_alert=True)
 
         if callback_query.data.split(":")[0] == "change_lang":
