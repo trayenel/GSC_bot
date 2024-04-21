@@ -79,6 +79,55 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         session.commit()
         await app.send_message(message.chat.id, extractUrl(message.text))
 
+    async def send_language_menu(client: Client, chat_id: int, user_lang: str):
+        # Set the translation to user_lang.
+        _ = get_translation(user_lang)
+
+        lang_rows = []
+        locales = available_locales
+        print(locales)
+        # The sort function is being used to reorder the list so user.language_code
+        # is the first button, in a way to make it easier for the user to pick
+        # their language if Telegram returned the correct one.
+        for lang in sorted(locales, key=user_lang.__eq__, reverse=True):
+            lang_rows.append(
+                InlineKeyboardButton(
+                    text=f'{locales[lang]["full_name"]} ({lang})',
+                    callback_data="welcome:" + lang,
+                )
+            )
+
+        button_rows = get_rows(lang_rows, 3)
+
+        lang_markup = InlineKeyboardMarkup(button_rows)
+
+        await client.send_message(
+            chat_id=chat_id,
+            text=_("Please select your language:"),
+            reply_markup=lang_markup,
+        )
+
+    async def send_welcome_message(client: Client, user_id: int, lang: str):
+        _ = get_translation(lang)
+        bot_name = _("GSC_Bot")
+
+        # If lang is English, label = 'Change Language 🌐'
+        # else label = "<'Change Language' translated> (Change Language) 🌐"
+        if lang.startswith("en_") or lang == "en":
+            change_lang_button_label = "Change Language 🌐"
+        else:
+            change_lang_button_label = _("Change Language") + " (Change Language) 🌐"
+
+        await client.send_message(
+            chat_id=user_id,
+            text=_(START_MESSAGE),
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton(change_lang_button_label, "change_lang:" + lang)],
+                ]
+            ),
+        )
+
     await app.start()
 
     logging.getLogger("SR2_bot").info("Auth successful")

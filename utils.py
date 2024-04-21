@@ -71,13 +71,13 @@ def _get_available_langs():
     Gets all available/translated languages by searching against babel's list.
     """
     langs = ['en', 'ro', 'fa']
-    # languages = [*babel.Locale("en").languages, "zh-CN", "zh-TW"]
-    #
-    # for locale in gettext.find('SR2_bot', './locales', languages=languages, all=True):
-    #     parts = Path(locale).relative_to('/locales').parts
-    #     # Assume there are at least 2 parts
-    #     if len(parts) >= 2:
-    #         langs.append(str(parts[0]))
+    languages = [*babel.Locale("en").languages, "zh-CN", "zh-TW"]
+
+    for locale in gettext.find('SR2_bot', './locales', languages=languages, all=True):
+        parts = Path(locale).relative_to('/locales').parts
+        # Assume there are at least 2 parts
+        if len(parts) >= 2:
+            langs.append(str(parts[0]))
 
     return langs
 
