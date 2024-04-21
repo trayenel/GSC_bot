@@ -69,7 +69,7 @@ def _get_available_langs():
     """
     Gets all available/translated languages by searching against babel's list.
     """
-    langs = ["en", 'ru']
+    langs = ["en", 'ru','fa','ro']
     languages = [*babel.Locale("en").languages, "zh-CN", "zh-TW"]
     for locale in gettext.find(
             _domain, str(_locales_dir), languages=languages, all=True

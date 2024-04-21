@@ -15,6 +15,7 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
+
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -94,7 +95,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_message(client: Client, user_id: int, lang: str):
-        _ = get_translation(lang)
         bot_name = _("GSC_Bot")
 
         # If lang is English, label = 'Change Language 🌐'
@@ -127,7 +127,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         setLanguage(callback_query.data)
         return await send_welcome_message(client, callback_query.from_user.id, callback_query.data)
-
 
     await app.start()
 

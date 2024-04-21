@@ -8,22 +8,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-21 12:21+0300\n"
+"POT-Creation-Date: 2024-04-21 12:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bot.py:30
 msgid "Yes"
-msgstr ""
+msgstr "Da"
 
 #: bot.py:31
 msgid "No"
-msgstr ""
+msgstr "Nu"
 
 #: bot.py:93
 msgid "Please select your language:"
@@ -48,6 +48,13 @@ msgid ""
 "Send me the link you want to share.\n"
 "\n"
 msgstr ""
+"\n"
+"Salut! 👋\n"
+"\n"
+"Sunt un bot care vă va ajuta să generați un link funcțional către o știre sau "
+"articol de pe un site de știri blocat.\n"
+"\n"
+"Trimiteți-mi link-ul pe care doriți să-l împărtășiți.\n"
 
 #: lang_constants.py:14
 msgid ""
@@ -60,10 +67,17 @@ msgid ""
 "broken link.\n"
 "\n"
 msgstr ""
+"\n"
+"Acest bot este conceput pentru a vă permite să partajați liber "
+"link-uri de pe site-uri media blocate în Rusia. \n"
+"\n"
+"Pentru a obține un link funcțional către un articol sau știre, trimiteți botului un link "
+"către un articol de pe unul dintre site-urile media blocate. \n"
+"\n"
 
 #: lang_constants.py:21
 msgid "Unsupported site, select /help to see what this bot does."
-msgstr ""
+msgstr "Site nesuportat, selectați /help pentru a vedea ce face acest robot."
 
 #: lang_constants.py:23
 msgid "Link will be reported."
@@ -75,4 +89,4 @@ msgstr ""
 
 #: lang_constants.py:27
 msgid "Do you want to report the following link:"
-msgstr ""
+msgstr "Doriți să reportați următorul link:"

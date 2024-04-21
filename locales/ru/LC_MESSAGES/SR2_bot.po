@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-21 10:56+0300\n"
+"POT-Creation-Date: 2024-04-21 12:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bot.py:31 lang_constants.py:27
+#: bot.py:30
 msgid "Yes"
-msgstr ""
+msgstr "Da"
 
-#: bot.py:32 lang_constants.py:29
+#: bot.py:31
 msgid "No"
-msgstr ""
+msgstr "Nu"
 
-#: bot.py:109
+#: bot.py:93
 msgid "Please select your language:"
 msgstr ""
 
-#: bot.py:115
+#: bot.py:99
 msgid "GSC_Bot"
 msgstr ""
 
-#: bot.py:122
+#: bot.py:106
 msgid "Change Language"
 msgstr ""
 
@@ -49,8 +49,13 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"sugem pula la negri"
+"Привет! 👋\n"
 "\n"
+"Я бот, который поможет вам сгенерировать рабочую ссылку на новость или "
+"статью с сайта заблокированного СМИ.\n"
+"\n"
+"Отправьте мне ссылку, которой хотите поделиться.\n"
+
 #: lang_constants.py:14
 msgid ""
 "\n"
@@ -63,12 +68,16 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"sugem pula la negri"
+"Данный бот создан для того, чтобы вы могли безпрепятственно делиться "
+"ссылками с заблокированных в России сайтов СМИ.\n"
+"\n"
+"Чтобы получить рабочую ссылку на статью или новость, отправьте боту ссылку "
+"на статью с одного из сайтов заблокированного СМИ.\n"
 "\n"
 
 #: lang_constants.py:21
 msgid "Unsupported site, select /help to see what this bot does."
-msgstr ""
+msgstr "Неподдерживаемый сайт, выберите /help, чтобы узнать, что делает этот бот."
 
 #: lang_constants.py:23
 msgid "Link will be reported."
@@ -77,3 +86,7 @@ msgstr ""
 #: lang_constants.py:25
 msgid "Link will not be reported."
 msgstr ""
+
+#: lang_constants.py:27
+msgid "Do you want to report the following link:"
+msgstr "Doriți să reportați următorul link:"

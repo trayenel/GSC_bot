@@ -8,22 +8,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-21 12:21+0300\n"
+"POT-Creation-Date: 2024-04-21 12:07+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bot.py:30
 msgid "Yes"
-msgstr ""
+msgstr "بله"
 
 #: bot.py:31
 msgid "No"
-msgstr ""
+msgstr "نه"
 
 #: bot.py:93
 msgid "Please select your language:"
@@ -48,6 +48,14 @@ msgid ""
 "Send me the link you want to share.\n"
 "\n"
 msgstr ""
+"\n"
+"سلام! 👋\n"
+"\n"
+"من یک ربات هستم که به شما کمک می‌کند تا از یک سایت خبری مسدود شده، یک پیوند "
+"کاری به یک مقاله یا داستان ایجاد کنید.\n"
+"\n"
+"لینکی را که می خواهید به اشتراک بگذارید برای من بفرستید.\n"
+"\n"
 
 #: lang_constants.py:14
 msgid ""
@@ -60,19 +68,32 @@ msgid ""
 "broken link.\n"
 "\n"
 msgstr ""
+"‫\n"
+"‬\n"
+"‫این ربات طوری طراحی شده است که امکان اشتراک گذاری رایگان لینک ها از سایت های "
+"رسانه ای که در ایران مسدود شده اند را فراهم می کند.\n"
+"‬\n"
+"‏‫‬\n"
+"‬\n"
+"‫‫برای دریافت لینک کاری به یک مقاله یا خبر، یک لینک به یک مقاله از یکی از سایت "
+"های رسانه ای مسدود شده به ربات ارسال کنید یا یک گزارش را برای گزارش یک لینک "
+"خراب انتخاب کنید.\n"
+"‬\n"
+"‏‫\n"
+"‬\n"
 
 #: lang_constants.py:21
 msgid "Unsupported site, select /help to see what this bot does."
-msgstr ""
+msgstr "سایت پشتیبانی نمی‌شود، برای دیدن امکانات این ربات، /help را انتخاب کنید."
 
 #: lang_constants.py:23
 msgid "Link will be reported."
-msgstr ""
+msgstr "لینک گزارش خواهد شد."
 
 #: lang_constants.py:25
 msgid "Link will not be reported."
-msgstr ""
+msgstr "لینک گزارش نخواهد شد."
 
 #: lang_constants.py:27
 msgid "Do you want to report the following link:"
-msgstr ""
+msgstr "آیا می‌خواهید لینک زیر را گزارش دهید:"

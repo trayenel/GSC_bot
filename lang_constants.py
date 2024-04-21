@@ -24,8 +24,4 @@ REPORT_TRUE = _('Link will be reported.')
 
 REPORT_FALSE = _('Link will not be reported.')
 
-YES_MSG = _('Yes')
-
-NO_MSG = _('No')
-
-REPORT_MSG = f"Do you want to report the following link:"
+REPORT_MSG = _(f"Do you want to report the following link:")
