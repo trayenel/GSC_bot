@@ -6,7 +6,7 @@ import babel
 from pathlib import Path
 
 _locales_dir = "./locales"
-_domain = "GSC_bot"
+_domain = "SR2_bot"
 
 
 def validateUrl(url):
@@ -72,8 +72,9 @@ def _get_available_langs():
     """
     Gets all available/translated languages by searching against babel's list.
     """
-    langs = ["en", 'fa']
+    langs = ["en"]
     languages = [*babel.Locale("en").languages, "zh-CN", "zh-TW"]
+
     for locale in gettext.find(
             _domain, str(_locales_dir), languages=languages, all=True
     ):
@@ -115,7 +116,7 @@ def _get_full_names():
 
 # This exists so the above two - expensive - functions, only run once on startup.
 available_locales = _get_full_names()
-
+print(available_locales)
 
 def get_translation(locale="en"):
     """
