@@ -116,7 +116,6 @@ def _get_full_names():
 
 # This exists so the above two - expensive - functions, only run once on startup.
 available_locales = _get_full_names()
-print(available_locales)
 
 def get_translation(locale="en"):
     """

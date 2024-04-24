@@ -1,4 +1,6 @@
 import logging
+import requests
+
 from database import upsertLink, selectLink, session, Links
 from utils import (
     validateUrl,
@@ -39,15 +41,25 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
+        _ = get_translation()
+
         if not validateUrl(message.text):
             await app.send_message(
                 message.chat.id,
                 _(URL_ERR_MESSAGE),
             )
             return
+
         upsertLink(Links, message.chat.id, message.text)
         session.commit()
-        await app.send_message(message.chat.id, extractUrl(message.text))
+
+        r = requests.get(f'http://redirector.cgdev.uk:5000/link?url=https://{extractUrl(message.text)}&type=getsitecopy')
+
+        if r.status_code == 500:
+            return await app.send_message(message.chat.id, _(URL_ERR_MESSAGE))
+
+        res = r.json()
+        return await app.send_message(message.chat.id, res["url"])
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -106,7 +118,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
     async def send_report_menu(client, message, lang):
         _ = get_translation(lang)
-        print(lang)
+
         await app.send_message(
             message.chat.id,
             _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",

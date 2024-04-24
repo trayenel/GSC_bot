@@ -1,6 +1,7 @@
-tldextract
-pyrogram
+tldextract~=5.1.2
+pyrogram~=2.0.106
 tgcrypto
-validators
-sqlalchemy
-babel
+validators~=0.28.1
+sqlalchemy~=2.0.29
+babel~=2.14.0
+requests~=2.31.0
