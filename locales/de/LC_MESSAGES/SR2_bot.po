@@ -12,18 +12,18 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: en\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bot.py:30
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: bot.py:31
 msgid "No"
-msgstr ""
+msgstr "Nein"
 
 #: bot.py:93
 msgid "Please select your language:"
@@ -48,6 +48,13 @@ msgid ""
 "Send me the link you want to share.\n"
 "\n"
 msgstr ""
+"\n"
+"Hallo! 👋\n"
+"\n"
+"Ich bin ein Bot, der dir helfen wird, einen funktionierenden Link zu einem Artikel "
+"oder einer Nachrichtengeschichte von einer blockierten Nachrichtenwebsite zu generieren.\n"
+"\n"
+"Schick mir den Link, den du teilen möchtest.\n"
 
 #: lang_constants.py:14
 msgid ""
@@ -60,10 +67,18 @@ msgid ""
 "broken link.\n"
 "\n"
 msgstr ""
+"\n"
+"Dieser Bot wurde entwickelt, um es Ihnen zu ermöglichen, "
+"Links von Medienwebsites frei zu teilen, die durch Zensur blockiert sind.\n"
+"\n"
+"Um einen funktionierenden Link zu einem Artikel oder einer Nachrichtengeschichte zu "
+"erhalten, senden Sie dem Bot einen Link zu einem Artikel von einer der blockierten Medienwebsites "
+"oder wählen Sie 'Melden', um einen defekten Link zu melden.\n"
+"\n"
 
 #: lang_constants.py:21
 msgid "Unsupported site, select /help to see what this bot does."
-msgstr ""
+msgstr "Unterstützte Website nicht verfügbar. Wählen Sie /help, um zu sehen, was dieser Bot tut."
 
 #: lang_constants.py:23
 msgid "Link will be reported."
@@ -75,4 +90,4 @@ msgstr ""
 
 #: lang_constants.py:27
 msgid "Do you want to report the following link:"
-msgstr ""
+msgstr "Möchtest du den folgenden Link melden:"
