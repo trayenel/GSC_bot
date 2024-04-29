@@ -12,22 +12,22 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: en\n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: bot.py:30
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: bot.py:31
 msgid "No"
-msgstr ""
+msgstr "不"
 
 #: bot.py:93
 msgid "Please select your language:"
-msgstr ""
+msgstr "请选择您的语言："
 
 #: bot.py:99
 msgid "GSC_Bot"
@@ -35,7 +35,7 @@ msgstr ""
 
 #: bot.py:106
 msgid "Change Language"
-msgstr ""
+msgstr "更改语言"
 
 #: lang_constants.py:5
 msgid ""
@@ -48,6 +48,12 @@ msgid ""
 "Send me the link you want to share.\n"
 "\n"
 msgstr ""
+"\n"
+"你好！👋\n"
+"\n"
+"我是一个机器人，将帮助您生成来自被封锁的新闻网站的文章或故事的有效链接。\n"
+"\n"
+"请发送您想分享的链接给我。\n"
 
 #: lang_constants.py:14
 msgid ""
@@ -60,19 +66,24 @@ msgid ""
 "broken link.\n"
 "\n"
 msgstr ""
+"\n"
+"这个机器人旨在允许您自由分享被审查制度封锁的媒体网站的链接。\n"
+"\n"
+"要获取文章或新闻报道的有效链接，请向机器人发送被封锁的媒体网站之一的文章链接，或选择“报告”来报告链接损坏。\n"
+"\n"
 
 #: lang_constants.py:21
 msgid "Unsupported site, select /help to see what this bot does."
-msgstr ""
+msgstr "不支持的网站，请选择/help以查看此机器人的功能。"
 
 #: lang_constants.py:23
 msgid "Link will be reported."
-msgstr ""
+msgstr "链接将被报告。"
 
 #: lang_constants.py:25
 msgid "Link will not be reported."
-msgstr ""
+msgstr "链接将不会被报告。"
 
 #: lang_constants.py:27
 msgid "Do you want to report the following link:"
-msgstr ""
+msgstr "你想要报告以下链接吗？"
