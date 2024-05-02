@@ -157,7 +157,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         if callback_query.data.split(":")[0] == "no":
             _ = get_translation(callback_query.data.split(':')[1])
-            print(callback_query)
+
             return await client.send_message(callback_query.from_user.id, _(REPORT_FALSE))
 
         if callback_query.data.split(":")[0] == "change_lang":
