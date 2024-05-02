@@ -22,6 +22,7 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
+from urllib.parse import urlparse
 
 
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
@@ -53,7 +54,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         upsertLink(Links, message.chat.id, message.text)
         session.commit()
 
-        r = requests.get(f'http://redirector.cgdev.uk:5000/link?url=https://{extractUrl(message.text)}&type=getsitecopy')
+        link = 'https://' + extractUrl(message.text) + urlparse(message.text).path
+
+        r = requests.get(f'http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy')
 
         if r.status_code == 500:
             return await app.send_message(message.chat.id, _(URL_ERR_MESSAGE))
@@ -138,11 +141,13 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
-            return await callback_query.answer(_(REPORT_TRUE), show_alert=True)
+            print(callback_query)
+            return await client.send_message(callback_query.from_user.id, _(REPORT_TRUE))
 
         if callback_query.data.split(":")[0] == "no":
             _ = get_translation(callback_query.data.split(':')[1])
-            return await callback_query.answer(_(REPORT_FALSE), show_alert=True)
+            print(callback_query)
+            return await client.send_message(callback_query.from_user.id, _(REPORT_FALSE))
 
         if callback_query.data.split(":")[0] == "change_lang":
             return await send_language_menu(
