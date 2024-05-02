@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from database import upsertLink, selectLink, session, Links
+from database import upsertLink, upsertLang, selectLang, selectLink, session, Users
 from utils import (
     validateUrl,
     extractUrl,
@@ -32,6 +32,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     async def startHandler(client, message):
         user_lang = getUserLang(message)
 
+        upsertLang(Users, message.chat.id, user_lang)
+        session.commit()
+
         locales = available_locales.keys()
 
         return await send_language_menu(client, message.chat.id, user_lang)
@@ -42,7 +45,12 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
-        _ = get_translation()
+
+        try:
+            _ = get_translation(selectLang(Users, message.chat.id))
+        except Exception as e:
+            logging.error(e)
+            _ = get_translation()
 
         if not validateUrl(message.text):
             await app.send_message(
@@ -51,7 +59,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             )
             return
 
-        upsertLink(Links, message.chat.id, message.text)
+        upsertLink(Users, message.chat.id, message.text)
         session.commit()
 
         link = 'https://' + extractUrl(message.text) + urlparse(message.text).path
@@ -93,12 +101,16 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_message(client: Client, user_id: int, lang: str):
+        upsertLang(Users, user_id, lang)
+        session.commit()
+
         _ = get_translation(lang)
 
         bot_name = _("GSC_Bot")
 
         # If lang is English, label = 'Change Language 🌐'
         # else label = "<'Change Language' translated> (Change Language) 🌐"
+
         if lang.startswith("en_") or lang == "en":
             change_lang_button_label = "Change Language 🌐"
         else:
@@ -124,7 +136,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         await app.send_message(
             message.chat.id,
-            _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
+            _(REPORT_MSG) + " " + selectLink(Users, message.chat.id) + " ?",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
@@ -141,7 +153,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
-            print(callback_query)
             return await client.send_message(callback_query.from_user.id, _(REPORT_TRUE))
 
         if callback_query.data.split(":")[0] == "no":
