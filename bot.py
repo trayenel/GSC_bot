@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from database import upsertLink, selectLink, session, Links
+from database import upsertLink, upsertLang, selectLang, selectLink, session, Users
 from utils import (
     validateUrl,
     extractUrl,
@@ -22,6 +22,7 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
+from urllib.parse import urlparse
 
 
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
@@ -30,6 +31,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
         user_lang = getUserLang(message)
+
+        upsertLang(Users, message.chat.id, user_lang)
+        session.commit()
 
         locales = available_locales.keys()
 
@@ -41,7 +45,12 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
-        _ = get_translation()
+
+        try:
+            _ = get_translation(selectLang(Users, message.chat.id))
+        except Exception as e:
+            logging.error(e)
+            _ = get_translation()
 
         if not validateUrl(message.text):
             await app.send_message(
@@ -50,10 +59,12 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             )
             return
 
-        upsertLink(Links, message.chat.id, message.text)
+        upsertLink(Users, message.chat.id, message.text)
         session.commit()
 
-        r = requests.get(f'http://redirector.cgdev.uk:5000/link?url=https://{extractUrl(message.text)}&type=getsitecopy')
+        link = 'https://' + extractUrl(message.text) + urlparse(message.text).path
+
+        r = requests.get(f'http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy')
 
         if r.status_code == 500:
             return await app.send_message(message.chat.id, _(URL_ERR_MESSAGE))
@@ -90,12 +101,16 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_message(client: Client, user_id: int, lang: str):
+        upsertLang(Users, user_id, lang)
+        session.commit()
+
         _ = get_translation(lang)
 
         bot_name = _("GSC_Bot")
 
         # If lang is English, label = 'Change Language 🌐'
         # else label = "<'Change Language' translated> (Change Language) 🌐"
+
         if lang.startswith("en_") or lang == "en":
             change_lang_button_label = "Change Language 🌐"
         else:
@@ -121,7 +136,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         await app.send_message(
             message.chat.id,
-            _(REPORT_MSG) + " " + selectLink(Links, message.chat.id) + " ?",
+            _(REPORT_MSG) + " " + selectLink(Users, message.chat.id) + " ?",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
@@ -138,11 +153,12 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
-            return await callback_query.answer(_(REPORT_TRUE), show_alert=True)
+            return await client.send_message(callback_query.from_user.id, _(REPORT_TRUE))
 
         if callback_query.data.split(":")[0] == "no":
             _ = get_translation(callback_query.data.split(':')[1])
-            return await callback_query.answer(_(REPORT_FALSE), show_alert=True)
+
+            return await client.send_message(callback_query.from_user.id, _(REPORT_FALSE))
 
         if callback_query.data.split(":")[0] == "change_lang":
             return await send_language_menu(
