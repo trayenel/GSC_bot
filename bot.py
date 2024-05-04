@@ -41,7 +41,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
-        await app.send_message(message.chat.id, _(HELP_MESSAGE))
+        print(selectLink(Users, message.chat.id))
+        # await app.send_message(message.chat.id, _(HELP_MESSAGE))
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
@@ -57,6 +58,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 message.chat.id,
                 _(URL_ERR_MESSAGE),
             )
+            return
+
+        if selectLink(Users, message.chat.id) == message.text:
             return
 
         upsertLink(Users, message.chat.id, message.text)
@@ -131,6 +135,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 ]
             ),
         )
+
     async def send_report_menu(client, message, lang):
         _ = get_translation(lang)
 
@@ -146,6 +151,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 ]
             ),
             )
+
     @app.on_callback_query()
     async def answer(client, callback_query):
         if callback_query.data.split(':')[0] == "report":
