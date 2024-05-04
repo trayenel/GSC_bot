@@ -60,9 +60,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             )
             return
 
-        if selectLink(Users, message.chat.id) == message.text:
-            return
-
         upsertLink(Users, message.chat.id, message.text)
         session.commit()
 
