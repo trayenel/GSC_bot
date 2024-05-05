@@ -12,13 +12,12 @@ Send me the link you want to share.
 """)
 
 HELP_MESSAGE = _(f"""
-This bot is designed to allow you to freely share links from media sites blocked in Russia.
+This bot generates working links to news articles or stories from censored news sites.
 
-To get a working link to an article or news story, send the bot a link to an article from one of the blocked media sites or select Report to report a broken link.
-
+Send the bot a link to an article from a blocked news site, and if the site is supported, it will send you back a working link.
 """)
 
-URL_ERR_MESSAGE = _("Unsupported site, select /help to see what this bot does.")
+URL_ERR_MESSAGE = _("This news site is not yet supported")
 
 REPORT_TRUE = _('Link will be reported.')
 
