@@ -2,12 +2,18 @@ import logging
 import requests
 import validators
 
-from database import upsertLink, upsertLang, selectLang, selectLink, selectReport, upsertReport, addUser, session, Chats
-from utils import (
-    available_locales,
-    get_rows,
-    get_translation, getUserLang
+from database import (
+    upsertLink,
+    upsertLang,
+    selectLang,
+    selectLink,
+    selectReport,
+    upsertReport,
+    addUser,
+    session,
+    Chats,
 )
+from utils import available_locales, get_rows, get_translation, getUserLang
 from lang_constants import (
     START_MESSAGE,
     HELP_MESSAGE,
@@ -19,7 +25,6 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-from urllib.parse import urlparse
 
 
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
@@ -47,7 +52,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         user_lang = selectLang(Chats, message.chat.id)
         _ = get_translation(user_lang)
 
-
         if not validators.url(message.text):
             await app.send_message(
                 message.chat.id,
@@ -62,15 +66,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         link = message.text
 
-        r = requests.get(f'http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy')
+        r = requests.get(
+            f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
+        )
 
         if r.status_code == 500:
-            await app.send_message(message.chat.id, _(URL_ERR_MESSAGE))
-            return await send_report_menu(client, message.chat.id, user_lang)
+            return await send_link_with_report_menu(
+                client, message.chat.id, user_lang, _(URL_ERR_MESSAGE)
+            )
 
-        await app.send_message(message.chat.id, r.json()["url"])
-        return await send_report_menu(client, message.chat.id, user_lang)
-
+        url = r.json()["url"]
+        return await send_link_with_report_menu(client, message.chat.id, user_lang, url)
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -100,22 +106,18 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             reply_markup=lang_markup,
         )
 
-    async def send_report_menu(client: Client, user_id: int, lang: str):
+    async def send_link_with_report_menu(
+            client: Client, user_id: int, lang: str, textStr: str
+    ):
         _ = get_translation(lang)
 
         await client.send_message(
             chat_id=user_id,
-            text=None,
+            text=textStr,
             reply_markup=InlineKeyboardMarkup(
-                [
-
-                     [InlineKeyboardButton(
-                    _('Report broken link'), "report:" + lang
-                )]
-                ]
-            )
+                [[InlineKeyboardButton(_("Report broken link"), "report:" + lang)]]
+            ),
         )
-
 
     async def send_welcome_menu(client: Client, user_id: int, lang: str):
         upsertLang(Chats, user_id, lang)
@@ -146,19 +148,20 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
         return
 
-
-
-
     @app.on_callback_query()
     async def answer(client, callback_query):
-        if callback_query.data.split(':')[0] == "report":
-            _ = get_translation(callback_query.data.split(':')[1])
+        if callback_query.data.split(":")[0] == "report":
+            _ = get_translation(callback_query.data.split(":")[1])
 
             if selectReport(Chats, callback_query.from_user.id) == 1:
-                return await client.send_message(callback_query.from_user.id, _('Already reported'))
+                return await client.send_message(
+                    callback_query.from_user.id, _("Link already reported")
+                )
 
             upsertReport(Chats, callback_query.from_user.id, 1)
-            return await client.send_message(callback_query.from_user.id, _(REPORT_TRUE))
+            return await client.send_message(
+                callback_query.from_user.id, _(REPORT_TRUE)
+            )
 
         if callback_query.data.split(":")[0] == "change_lang":
             return await send_language_menu(
