@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.sqlite import insert
@@ -11,21 +11,35 @@ Base = declarative_base()
 class Users(Base):
     __tablename__ = "users"
     chat_id = Column(Integer, nullable=False, primary_key=True)
-    link = Column(String, nullable=True)
-    lang = Column(String, nullable=True)
+    link = Column(String, nullable=True, default=None)
+    lang = Column(String, nullable=True, default='en')
+    isReported = Column(Boolean, nullable=True, default=0)
 
     def __repr__(self):
-        return f"<id(id={self.chat_id}, link={self.link}, lang={self.lang})>"
+        return f"<id(id={self.chat_id}, link={self.link}, lang={self.lang}, isReported={self.isReported})>"
 
 Base.metadata.create_all(engine)
 
 session = Session()
 
+def addUser(usersTable, message_chat_id):
+    insert_stmt = insert(usersTable).values(chat_id=message_chat_id)
+    do_nothing_stmt = insert_stmt.on_conflict_do_nothing(index_elements=['chat_id'])
+    session.execute(do_nothing_stmt)
+    session.commit()
 
 def upsertLink(usersTable, message_chat_id, message_text):
     insert_stmt = insert(usersTable).values(chat_id=message_chat_id, link=message_text)
     upsert_stmt = insert_stmt.on_conflict_do_update(
         index_elements=["chat_id"], set_={"link": insert_stmt.excluded.link}
+    )
+    session.execute(upsert_stmt)
+    session.commit()
+
+def upsertReport(usersTable, message_chat_id, value):
+    insert_stmt = insert(usersTable).values(chat_id=message_chat_id, isReported=value)
+    upsert_stmt = insert_stmt.on_conflict_do_update(
+        index_elements=["chat_id"], set_={"isReported": insert_stmt.excluded.isReported}
     )
     session.execute(upsert_stmt)
     session.commit()
@@ -46,3 +60,7 @@ def upsertLang(usersTable, message_chat_id, language):
 def selectLang(userTable, chat_id):
     lang = session.query(userTable).where(userTable.chat_id == chat_id)
     return lang[0].lang
+
+def selectReport(userTable, chat_id):
+    isReported = session.query(userTable).where(userTable.chat_id == chat_id)
+    return isReported[0].isReported
