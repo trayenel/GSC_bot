@@ -22,6 +22,3 @@ URL_ERR_MESSAGE = _("Unsupported site, select /help to see what this bot does.")
 
 REPORT_TRUE = _('Link will be reported.')
 
-REPORT_FALSE = _('Link will not be reported.')
-
-REPORT_MSG = _(f"Do you want to report the following link:")

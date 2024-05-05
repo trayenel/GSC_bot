@@ -69,10 +69,3 @@ msgstr ""
 msgid "Link will be reported."
 msgstr ""
 
-#: lang_constants.py:25
-msgid "Link will not be reported."
-msgstr ""
-
-#: lang_constants.py:27
-msgid "Do you want to report the following link:"
-msgstr ""

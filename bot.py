@@ -13,8 +13,6 @@ from lang_constants import (
     HELP_MESSAGE,
     URL_ERR_MESSAGE,
     REPORT_TRUE,
-    REPORT_FALSE,
-    REPORT_MSG,
 )
 from pyrogram import Client, filters, idle
 from pyrogram.types import (
@@ -107,12 +105,13 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         await client.send_message(
             chat_id=user_id,
-            text=_(REPORT_MSG),
+            text=None,
             reply_markup=InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton(
-                        _('Report'), "report:" + lang
-                    )]
+
+                     [InlineKeyboardButton(
+                    _('Report broken link'), "report:" + lang
+                )]
                 ]
             )
         )
@@ -148,28 +147,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         return
 
 
-    async def send_report_choices_menu(client, message, lang):
-        _ = get_translation(lang)
 
-        await app.send_message(
-            message.chat.id,
-            _(REPORT_MSG) + " " + selectLink(Chats, message.chat.id) + " ?",
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton(_("Yes"), "yes:" + lang),
-                        InlineKeyboardButton(_("No"), "no:" + lang),
-                    ]
-                ]
-            ),
-            )
 
     @app.on_callback_query()
     async def answer(client, callback_query):
         if callback_query.data.split(':')[0] == "report":
-            return await send_report_choices_menu(client, callback_query.message, callback_query.data.split(':')[1])
-
-        if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
 
             if selectReport(Chats, callback_query.from_user.id) == 1:
@@ -177,14 +159,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
             upsertReport(Chats, callback_query.from_user.id, 1)
             return await client.send_message(callback_query.from_user.id, _(REPORT_TRUE))
-
-        if callback_query.data.split(":")[0] == "no":
-            _ = get_translation(callback_query.data.split(':')[1])
-
-            if selectReport(Chats, callback_query.from_user.id) == 1:
-                return await client.send_message(callback_query.from_user.id, _('Already reported'))
-
-            return await client.send_message(callback_query.from_user.id, _(REPORT_FALSE))
 
         if callback_query.data.split(":")[0] == "change_lang":
             return await send_language_menu(
