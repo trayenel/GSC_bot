@@ -54,7 +54,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if not validateUrl(message.text):
             await app.send_message(
                 message.chat.id,
-                _(URL_ERR_MESSAGE),
+                _(HELP_MESSAGE),
             )
             return
 
