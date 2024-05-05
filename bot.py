@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from database import upsertLink, upsertLang, selectLang, selectLink, selectReport, upsertReport, addUser, session, Users
+from database import upsertLink, upsertLang, selectLang, selectLink, selectReport, upsertReport, addUser, session, Chats
 from utils import (
     validateUrl,
     extractUrl,
@@ -32,7 +32,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     async def startHandler(client, message):
         user_lang = getUserLang(message)
 
-        upsertLang(Users, message.chat.id, user_lang)
+        upsertLang(Chats, message.chat.id, user_lang)
         session.commit()
 
         locales = available_locales.keys()
@@ -41,14 +41,14 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
-        _ = get_translation(selectLang(Users, message.chat.id))
+        _ = get_translation(selectLang(Chats, message.chat.id))
         await app.send_message(message.chat.id, _(HELP_MESSAGE))
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
-        addUser(Users, message.chat.id)
+        addUser(Chats, message.chat.id)
 
-        _ = get_translation(selectLang(Users, message.chat.id))
+        _ = get_translation(selectLang(Chats, message.chat.id))
 
 
         if not validateUrl(message.text):
@@ -58,9 +58,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             )
             return
 
-        if selectLink(Users, message.chat.id) != message.text:
-            upsertLink(Users, message.chat.id, message.text)
-            upsertReport(Users, message.chat.id, 0)
+        if selectLink(Chats, message.chat.id) != message.text:
+            upsertLink(Chats, message.chat.id, message.text)
+            upsertReport(Chats, message.chat.id, 0)
             session.commit()
 
         link = 'https://' + extractUrl(message.text) + urlparse(message.text).path
@@ -102,7 +102,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_message(client: Client, user_id: int, lang: str):
-        upsertLang(Users, user_id, lang)
+        upsertLang(Chats, user_id, lang)
         session.commit()
 
         _ = get_translation(lang)
@@ -117,7 +117,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         else:
             change_lang_button_label = _("Change Language") + " (Change Language) 🌐"
 
-        if selectLink(Users, user_id) is None:
+        if selectLink(Chats, user_id) is None:
             await client.send_message(
                 chat_id=user_id,
                 text=_(START_MESSAGE),
@@ -155,7 +155,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         await app.send_message(
             message.chat.id,
-            _(REPORT_MSG) + " " + selectLink(Users, message.chat.id) + " ?",
+            _(REPORT_MSG) + " " + selectLink(Chats, message.chat.id) + " ?",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
@@ -174,16 +174,16 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
 
-            if selectReport(Users, callback_query.from_user.id) == 1:
+            if selectReport(Chats, callback_query.from_user.id) == 1:
                 return await client.send_message(callback_query.from_user.id, _('Already reported'))
 
-            upsertReport(Users, callback_query.from_user.id, 1)
+            upsertReport(Chats, callback_query.from_user.id, 1)
             return await client.send_message(callback_query.from_user.id, _(REPORT_TRUE))
 
         if callback_query.data.split(":")[0] == "no":
             _ = get_translation(callback_query.data.split(':')[1])
 
-            if selectReport(Users, callback_query.from_user.id) == 1:
+            if selectReport(Chats, callback_query.from_user.id) == 1:
                 return await client.send_message(callback_query.from_user.id, _('Already reported'))
 
             return await client.send_message(callback_query.from_user.id, _(REPORT_FALSE))

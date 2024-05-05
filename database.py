@@ -8,8 +8,8 @@ Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
 
-class Users(Base):
-    __tablename__ = "users"
+class Chats(Base):
+    __tablename__ = "chats"
     chat_id = Column(Integer, nullable=False, primary_key=True)
     link = Column(String, nullable=True, default=None)
     lang = Column(String, nullable=True, default='en')
