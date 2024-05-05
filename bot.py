@@ -4,8 +4,6 @@ import validators
 
 from database import upsertLink, upsertLang, selectLang, selectLink, selectReport, upsertReport, addUser, session, Chats
 from utils import (
-    validateUrl,
-    extractUrl,
     available_locales,
     get_rows,
     get_translation, getUserLang
@@ -104,20 +102,20 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             reply_markup=lang_markup,
         )
 
-   async def send_report_menu(client: Client, user_id: int, lang: str):
-       _ = get_translation(lang)
+    async def send_report_menu(client: Client, user_id: int, lang: str):
+        _ = get_translation(lang)
 
-       await client.send_message(
+        await client.send_message(
             chat_id=user_id,
             text=_(REPORT_MSG),
             reply_markup=InlineKeyboardMarkup(
                 [
-                     [InlineKeyboardButton(
-                    _('Report'), "report:" + lang
-                )]
+                    [InlineKeyboardButton(
+                        _('Report'), "report:" + lang
+                    )]
                 ]
             )
-       )
+        )
 
 
     async def send_welcome_menu(client: Client, user_id: int, lang: str):
