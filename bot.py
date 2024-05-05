@@ -25,7 +25,6 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-from urllib.parse import urlparse
 
 
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
