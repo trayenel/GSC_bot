@@ -1,5 +1,6 @@
 import logging
 import requests
+import validators
 
 from database import upsertLink, upsertLang, selectLang, selectLink, selectReport, upsertReport, addUser, session, Chats
 from utils import (
@@ -47,11 +48,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     @app.on_message(filters.private)
     async def domainHandler(client, message):
         addUser(Chats, message.chat.id)
+        user_lang = selectLang(Chats, message.chat.id)
+        _ = get_translation(user_lang)
 
-        _ = get_translation(selectLang(Chats, message.chat.id))
 
-
-        if not validateUrl(message.text):
+        if not validators.url(message.text):
             await app.send_message(
                 message.chat.id,
                 _(HELP_MESSAGE),
@@ -63,15 +64,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             upsertReport(Chats, message.chat.id, 0)
             session.commit()
 
-        link = 'https://' + extractUrl(message.text) + urlparse(message.text).path
+        link = message.text
 
         r = requests.get(f'http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy')
 
         if r.status_code == 500:
-            return await app.send_message(message.chat.id, _(URL_ERR_MESSAGE))
+            await app.send_message(message.chat.id, _(URL_ERR_MESSAGE))
+            return await send_report_menu(client, message.chat.id, user_lang)
 
-        res = r.json()
-        return await app.send_message(message.chat.id, res["url"])
+        await app.send_message(message.chat.id, r.json()["url"])
+        return await send_report_menu(client, message.chat.id, user_lang)
+
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -101,13 +104,27 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             reply_markup=lang_markup,
         )
 
-    async def send_welcome_message(client: Client, user_id: int, lang: str):
+   async def send_report_menu(client: Client, user_id: int, lang: str):
+       _ = get_translation(lang)
+
+       await client.send_message(
+            chat_id=user_id,
+            text=_(REPORT_MSG),
+            reply_markup=InlineKeyboardMarkup(
+                [
+                     [InlineKeyboardButton(
+                    _('Report'), "report:" + lang
+                )]
+                ]
+            )
+       )
+
+
+    async def send_welcome_menu(client: Client, user_id: int, lang: str):
         upsertLang(Chats, user_id, lang)
         session.commit()
 
         _ = get_translation(lang)
-
-        bot_name = _("GSC_Bot")
 
         # If lang is English, label = 'Change Language 🌐'
         # else label = "<'Change Language' translated> (Change Language) 🌐"
@@ -117,40 +134,23 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         else:
             change_lang_button_label = _("Change Language") + " (Change Language) 🌐"
 
-        if selectLink(Chats, user_id) is None:
-            await client.send_message(
-                chat_id=user_id,
-                text=_(START_MESSAGE),
-                reply_markup=InlineKeyboardMarkup(
+        await client.send_message(
+            chat_id=user_id,
+            text=_(START_MESSAGE),
+            reply_markup=InlineKeyboardMarkup(
+                [
                     [
-                        [
-                            InlineKeyboardButton(
-                                change_lang_button_label, "change_lang:" + lang
-                            )
-                        ],
-                    ]
-                ),
-            )
-            return
-        else:
-            await client.send_message(
-                chat_id=user_id,
-                text=_(START_MESSAGE),
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton(
-                                change_lang_button_label, "change_lang:" + lang
-                            )
-                        ], [InlineKeyboardButton(
-                        _('Report'), "report:" + lang
-                    )]
-                    ]
-                ),
-            )
-            return
+                        InlineKeyboardButton(
+                            change_lang_button_label, "change_lang:" + lang
+                        )
+                    ],
+                ]
+            ),
+        )
+        return
 
-    async def send_report_menu(client, message, lang):
+
+    async def send_report_choices_menu(client, message, lang):
         _ = get_translation(lang)
 
         await app.send_message(
@@ -169,7 +169,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     @app.on_callback_query()
     async def answer(client, callback_query):
         if callback_query.data.split(':')[0] == "report":
-            return await send_report_menu(client, callback_query.message, callback_query.data.split(':')[1])
+            return await send_report_choices_menu(client, callback_query.message, callback_query.data.split(':')[1])
 
         if callback_query.data.split(":")[0] == "yes":
             _ = get_translation(callback_query.data.split(':')[1])
@@ -195,7 +195,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 callback_query.data.split(":")[1],
             )
 
-        return await send_welcome_message(
+        return await send_welcome_menu(
             client, callback_query.from_user.id, callback_query.data
         )
 

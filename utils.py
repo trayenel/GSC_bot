@@ -9,16 +9,6 @@ _locales_dir = "./locales"
 _domain = "SR2_bot"
 
 
-def validateUrl(url):
-    if validators.domain(url) or validators.url(url):
-        return True
-    return False
-
-
-def extractUrl(url):
-    return tldextract.extract(url).registered_domain
-
-
 def init_argparse() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(
