@@ -71,8 +71,6 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
         )
 
-        print(r.status_code)
-
         if r.status_code == 403:
             return await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
