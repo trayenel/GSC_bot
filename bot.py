@@ -17,8 +17,9 @@ from utils import available_locales, get_rows, get_translation, getUserLang
 from lang_constants import (
     START_MESSAGE,
     HELP_MESSAGE,
-    URL_ERR_MESSAGE,
+    SITE_UNSUPPORTED_MESSAGE,
     REPORT_TRUE,
+    BROKEN_URL_MESSAGE
 )
 from pyrogram import Client, filters, idle
 from pyrogram.types import (
@@ -70,9 +71,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
         )
 
+        print(r.status_code)
+
+        if r.status_code == 403:
+            return await send_link_with_report_menu(
+                client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
+            )
+
         if r.status_code == 500:
             return await send_link_with_report_menu(
-                client, message.chat.id, user_lang, _(URL_ERR_MESSAGE)
+                client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE)
+            #     run reporting code here
             )
 
         url = r.json()["url"]

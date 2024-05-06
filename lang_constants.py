@@ -17,7 +17,12 @@ This bot generates working links to news articles or stories from censored news 
 Send the bot a link to an article from a blocked news site, and if the site is supported, it will send you back a working link.
 """)
 
-URL_ERR_MESSAGE = _("This news site is not yet supported")
+SITE_UNSUPPORTED_MESSAGE = _("This news site is not yet supported")
 
 REPORT_TRUE = _('Link will be reported.')
 
+BROKEN_URL_MESSAGE = _('This article could not be processed. Please try a different article.')
+
+# Generate pot files with:
+#
+# xgettext -L Python --files-from=locales/POTFILES --output=locales/SR2_bot.pot

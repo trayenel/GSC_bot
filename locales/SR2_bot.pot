@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-05 19:45+0300\n"
+"POT-Creation-Date: 2024-05-06 17:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bot.py:105
+#: bot.py:114
 msgid "Please select your language:"
 msgstr ""
 
-#: bot.py:118
+#: bot.py:127
 msgid "Report broken link"
 msgstr ""
 
-#: bot.py:134
+#: bot.py:143
 msgid "Change Language"
 msgstr ""
 
-#: bot.py:158
+#: bot.py:167
 msgid "Link already reported"
 msgstr ""
 
@@ -61,4 +61,8 @@ msgstr ""
 
 #: lang_constants.py:22
 msgid "Link will be reported."
+msgstr ""
+
+#: lang_constants.py:24
+msgid "This article could not be processed. Please try a different article."
 msgstr ""
