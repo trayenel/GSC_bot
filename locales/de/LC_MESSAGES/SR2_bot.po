@@ -8,34 +8,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-21 12:07+0300\n"
+"POT-Creation-Date: 2024-05-06 17:50+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: de\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: bot.py:30
-msgid "Yes"
-msgstr "Ja"
-
-#: bot.py:31
-msgid "No"
-msgstr "Nein"
-
-#: bot.py:93
+#: bot.py:114
 msgid "Please select your language:"
-msgstr ""
+msgstr "Bitte wählen Sie Ihre Sprache aus:"
 
-#: bot.py:99
-msgid "GSC_Bot"
-msgstr ""
+#: bot.py:127
+msgid "Report broken link"
+msgstr "Kaputten Link melden"
 
-#: bot.py:106
+#: bot.py:143
 msgid "Change Language"
-msgstr ""
+msgstr "Sprache ändern"
+
+#: bot.py:167
+msgid "Link already reported"
+msgstr "Link bereits gemeldet"
 
 #: lang_constants.py:5
 msgid ""
@@ -49,45 +45,38 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Hallo! 👋\n"
+"Hello! 👋\n"
 "\n"
-"Ich bin ein Bot, der dir helfen wird, einen funktionierenden Link zu einem Artikel "
-"oder einer Nachrichtengeschichte von einer blockierten Nachrichtenwebsite zu generieren.\n"
+"I'm a bot that will help you generate a working link to a news article or "
+"story from a blocked news site.\n"
 "\n"
-"Schick mir den Link, den du teilen möchtest.\n"
+"Send me the link you want to share.\n"
+"\n"
 
 #: lang_constants.py:14
 msgid ""
 "\n"
-"This bot is designed to allow you to freely share links from media sites "
-"blocked by censorship.\n"
+"This bot generates working links to news articles or stories from censored "
+"news sites.\n"
 "\n"
-"To get a working link to an article or news story, send the bot a link to an "
-"article from one of the blocked media sites or select Report to report a "
-"broken link.\n"
-"\n"
+"Send the bot a link to an article from a blocked news site, and if the site "
+"is supported, it will send you back a working link.\n"
 msgstr ""
 "\n"
-"Dieser Bot wurde entwickelt, um es Ihnen zu ermöglichen, "
-"Links von Medienwebsites frei zu teilen, die durch Zensur blockiert sind.\n"
+"Dieser Bot generiert funktionierende Links zu Nachrichtenartikeln oder Geschichten "
+"von zensierten Nachrichtenseiten.\n"
 "\n"
-"Um einen funktionierenden Link zu einem Artikel oder einer Nachrichtengeschichte zu "
-"erhalten, senden Sie dem Bot einen Link zu einem Artikel von einer der blockierten Medienwebsites "
-"oder wählen Sie 'Melden', um einen defekten Link zu melden.\n"
-"\n"
+"Senden Sie dem Bot einen Link zu einem Artikel von einer blockierten Nachrichtenseite, "
+"und wenn die Seite unterstützt wird, sendet er Ihnen einen funktionierenden Link zurück.\n"
 
-#: lang_constants.py:21
-msgid "Unsupported site, select /help to see what this bot does."
-msgstr "Unterstützte Website nicht verfügbar. Wählen Sie /help, um zu sehen, was dieser Bot tut."
+#: lang_constants.py:20
+msgid "This news site is not yet supported"
+msgstr "Diese Nachrichtenseite wird derzeit nicht unterstützt."
 
-#: lang_constants.py:23
+#: lang_constants.py:22
 msgid "Link will be reported."
-msgstr ""
+msgstr "Der Link wird gemeldet werden."
 
-#: lang_constants.py:25
-msgid "Link will not be reported."
-msgstr ""
-
-#: lang_constants.py:27
-msgid "Do you want to report the following link:"
-msgstr "Möchtest du den folgenden Link melden:"
+#: lang_constants.py:24
+msgid "This article could not be processed. Please try a different article."
+msgstr "Dieser Artikel konnte nicht verarbeitet werden. Bitte versuchen Sie es mit einem anderen Artikel."
