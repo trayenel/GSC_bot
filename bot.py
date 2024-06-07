@@ -67,9 +67,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         link = message.text
 
-        r = requests.get(
-            f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
-        )
+        redirector_request = f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
+
+        logger.info(f"Requesting link to redirector {redirector_request}")
+
+        r = requests.get(redirector_request)
 
         if r.status_code == 403:
             return await send_link_with_report_menu(
