@@ -34,13 +34,13 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
         try:
-            logging.getLogger('gsc-bot').info(f'Getting chat id {message.chat.id} stored language.')
             user_lang = selectLang(Chats, message.chat.id)
-            logging.getLogger('gsc-bot').info(f"User's lang is set to: {user_lang}.")
         except:
-            logging.getLogger('gsc-bot').error(f'Chat id {message.chat.id} not yet in database.')
-            user_lang = getUserLang(message)
-            logging.getLogger('gsc-bot').info(f'Using chat id app language: {message.from_user.language_code}')
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} did not select language. Using app lang.")
+            user_lang = message.from_user.language_code
+            addUser(Chats, message.chat.id)
+            session.commit()
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} added to database.")
 
         locales = available_locales.keys()
 
