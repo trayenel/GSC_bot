@@ -12,6 +12,7 @@ from database import (
     addUser,
     session,
     Chats,
+    getUserLang,
 )
 from utils import available_locales, get_rows, get_translation, getUserLang
 from lang_constants import (
@@ -36,7 +37,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         try:
             user_lang = selectLang(Chats, message.chat.id)
         except:
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} did not select language. Using app lang.")
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
             user_lang = message.from_user.language_code
             addUser(Chats, message.chat.id)
             session.commit()
@@ -51,7 +52,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         try:
             user_lang = selectLang(Chats, message.chat.id)
         except:
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} did not select language. Using app lang.")
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
             user_lang = message.from_user.language_code
             addUser(Chats, message.chat.id)
             session.commit()
@@ -66,7 +67,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         try:
             user_lang = selectLang(Chats, message.chat.id)
         except:
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} did not select language. Using app lang.")
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
             user_lang = message.from_user.language_code
             addUser(Chats, message.chat.id)
             session.commit()
