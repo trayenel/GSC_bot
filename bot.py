@@ -59,18 +59,19 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             )
             return
 
-        if selectLink(Chats, message.chat.id) != message.text:
-            logging.getLogger("SR2_bot").info(f"Storing link from chat id {message.chat.id} in database: {message.text}")
+        storedLink = selectLink(Chats, message.chat.id)
+        if storedLink != message.text:
+            logging.getLogger("gsc-bot").info(f"Storing link from chat id {message.chat.id} in database: {message.text}")
             upsertLink(Chats, message.chat.id, message.text)
             upsertReport(Chats, message.chat.id, 0)
             session.commit()
-            logging.getLogger("SR2_bot").info(f"Link {message.text} from chat id {message.chat.id} stored.")
+            logging.getLogger("gsc-bot").info(f"Link from chat id {message.chat.id} stored.")
 
         link = message.text
 
         redirector_request = f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
 
-        logging.getLogger("SR2_bot").info(f"Requesting link from chat id {message.chat.id} to redirector: {redirector_request}")
+        logging.getLogger("gsc-bot").info(f"Requesting link from chat id {message.chat.id} to redirector: {message.text}")
 
         r = requests.get(redirector_request)
 
@@ -78,19 +79,19 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
             )
-            return logging.getLogger("SR2_bot").error(f"Link from chat id {message.chat.id} unsupported by redirector: {redirector_request}")
+            return logging.getLogger("gsc-bot").error(f"Link from chat id {message.chat.id} unsupported by redirector.")
 
         if r.status_code == 500:
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE))
-            return logging.getLogger("SR2_bot").error(f"Link from chat id {message.chat.id} is broken: {redirector_request}")
+            return logging.getLogger("gsc-bot").error(f"Link from chat id {message.chat.id} is broken.")
 
         url = r.json()["url"]
 
         if url is not None:
             await send_link_with_report_menu(client, message.chat.id, user_lang, url)
 
-            return logging.getLogger("SR2_bot").info(f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}")
+            return logging.getLogger("gsc-bot").info(f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}")
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -167,12 +168,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if callback_query.data.split(":")[0] == "report":
             _ = get_translation(callback_query.data.split(":")[1])
 
+            logging.getLogger("gsc-bot").info(f"Chat id {callback_query.from_user.id} reporting link: {selectLink(Chats, callback_query.from_user.id)}")
+
             if selectReport(Chats, callback_query.from_user.id) == 1:
-                return await client.send_message(
+                await client.send_message(
                     callback_query.from_user.id, _("Link already reported")
                 )
+                return logging.getLogger("gsc-bot").error(f"Link already reported.")
 
             upsertReport(Chats, callback_query.from_user.id, 1)
+            logging.getLogger("gsc-bot").info(f"Link reported by chat id: {callback_query.from_user.id}.")
+
             return await client.send_message(
                 callback_query.from_user.id, _(REPORT_TRUE)
             )
@@ -188,11 +194,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             client, callback_query.from_user.id, callback_query.data
         )
 
-    logging.getLogger("SR2_bot").info("Auth successful")
+    logging.getLogger("gsc-bot").info("Auth successful")
 
     await app.start()
 
-    logging.getLogger("SR2_bot").info("App started")
+    logging.getLogger("gsc-bot").info("App started")
 
     await idle()
 
