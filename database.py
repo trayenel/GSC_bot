@@ -13,7 +13,7 @@ class Chats(Base):
     __tablename__ = "chats"
     chat_id = Column(Integer, nullable=False, primary_key=True)
     link = Column(String, nullable=True, default=None)
-    lang = Column(String, nullable=False)
+    lang = Column(String, nullable=True)
     isReported = Column(Boolean, nullable=False, default=0)
 
     def __repr__(self):
@@ -71,8 +71,12 @@ def checkUser(userTable, chat_id):
 
 def userLangChecker(table, message, log):
     if not checkUser(table, message.chat.id):
-        log.info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
+        log.warning(f"Chat id {message.chat.id} not yet in database.")
         addUser(table, message.chat.id, message.from_user.language_code)
         session.commit()
-        log.info(f"Chat id {message.chat.id} added to database.")
-    return selectLang(table, message.chat.id)
+        log.info(f"Chat id {message.chat.id} added to database with default langauge: {message.from_user.language_code}.")
+
+    lang = selectLang(table, message.chat.id)
+
+    log.info(f"Chat id {message.chat.id} lang retrieved: {lang}")
+    return lang

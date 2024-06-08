@@ -80,12 +80,12 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
             )
-            return logging.getLogger("gsc-bot").error(f"Link from chat id {message.chat.id} unsupported by redirector.")
+            return logging.getLogger("gsc-bot").warning(f"Api returned status code: {r.status_code}")
 
         if r.status_code == 500:
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE))
-            return logging.getLogger("gsc-bot").error(f"Link from chat id {message.chat.id} is broken.")
+            return logging.getLogger("gsc-bot").warning(f"Api returned status code: {r.status_code}")
 
         url = r.json()["url"]
 
