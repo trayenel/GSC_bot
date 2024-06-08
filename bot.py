@@ -27,15 +27,20 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
+
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
-        user_lang = getUserLang(message)
-
-        upsertLang(Chats, message.chat.id, user_lang)
-        session.commit()
+        try:
+            logging.getLogger('gsc-bot').info(f'Getting chat id {message.chat.id} stored language.')
+            user_lang = selectLang(Chats, message.chat.id)
+            logging.getLogger('gsc-bot').info(f"User's lang is set to: {user_lang}.")
+        except:
+            logging.getLogger('gsc-bot').error(f'Chat id {message.chat.id} not yet in database.')
+            user_lang = getUserLang(message)
+            logging.getLogger('gsc-bot').info(f'Using chat id app language: {message.from_user.language_code}')
 
         locales = available_locales.keys()
 
@@ -43,13 +48,30 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
-        _ = get_translation(selectLang(Chats, message.chat.id))
+        try:
+            user_lang = selectLang(Chats, message.chat.id)
+        except:
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} did not select language. Using app lang.")
+            user_lang = message.from_user.language_code
+            addUser(Chats, message.chat.id)
+            session.commit()
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} added to database.")
+
+        _ = get_translation(user_lang)
+
         await app.send_message(message.chat.id, _(HELP_MESSAGE))
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
-        addUser(Chats, message.chat.id)
-        user_lang = selectLang(Chats, message.chat.id)
+        try:
+            user_lang = selectLang(Chats, message.chat.id)
+        except:
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} did not select language. Using app lang.")
+            user_lang = message.from_user.language_code
+            addUser(Chats, message.chat.id)
+            session.commit()
+            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} added to database.")
+
         _ = get_translation(user_lang)
 
         if not validators.url(message.text):
@@ -61,7 +83,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         storedLink = selectLink(Chats, message.chat.id)
         if storedLink != message.text:
-            logging.getLogger("gsc-bot").info(f"Storing link from chat id {message.chat.id} in database: {message.text}")
+            logging.getLogger("gsc-bot").info(
+                f"Storing link from chat id {message.chat.id} in database: {message.text}")
             upsertLink(Chats, message.chat.id, message.text)
             upsertReport(Chats, message.chat.id, 0)
             session.commit()
@@ -71,7 +94,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         redirector_request = f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
 
-        logging.getLogger("gsc-bot").info(f"Requesting link from chat id {message.chat.id} to redirector: {message.text}")
+        logging.getLogger("gsc-bot").info(
+            f"Requesting link from chat id {message.chat.id} to redirector: {message.text}")
 
         r = requests.get(redirector_request)
 
@@ -91,7 +115,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if url is not None:
             await send_link_with_report_menu(client, message.chat.id, user_lang, url)
 
-            return logging.getLogger("gsc-bot").info(f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}")
+            return logging.getLogger("gsc-bot").info(
+                f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}")
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -135,6 +160,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_menu(client: Client, user_id: int, lang: str):
+        logging.getLogger('gsc-bot').info(f'Chat id {user_id} changed language to {lang}.')
         upsertLang(Chats, user_id, lang)
         session.commit()
 
@@ -168,7 +194,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         if callback_query.data.split(":")[0] == "report":
             _ = get_translation(callback_query.data.split(":")[1])
 
-            logging.getLogger("gsc-bot").info(f"Chat id {callback_query.from_user.id} reporting link: {selectLink(Chats, callback_query.from_user.id)}")
+            logging.getLogger("gsc-bot").info(
+                f"Chat id {callback_query.from_user.id} reporting link: {selectLink(Chats, callback_query.from_user.id)}")
 
             if selectReport(Chats, callback_query.from_user.id) == 1:
                 await client.send_message(
