@@ -27,7 +27,6 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
-
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
@@ -69,23 +68,24 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
         redirector_request = f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
 
-        logger.info(f"Requesting link to redirector {redirector_request}")
+        logging.getLogger("SR2_bot").info(f"Requesting link to redirector {redirector_request}")
 
         r = requests.get(redirector_request)
 
         if r.status_code == 403:
-            return await send_link_with_report_menu(
+            await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
             )
+            return logging.getLogger("SR2_bot").error(f"Link unsupported by redirector: {redirector_request}")
 
         if r.status_code == 500:
-            return await send_link_with_report_menu(
-                client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE)
-            #     run reporting code here
-            )
+            await send_link_with_report_menu(
+                client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE))
+            return logging.getLogger("SR2_bot").error(f"Link is broken: {redirector_request}")
 
         url = r.json()["url"]
-        return await send_link_with_report_menu(client, message.chat.id, user_lang, url)
+        await send_link_with_report_menu(client, message.chat.id, user_lang, url)
+        return logging.getLogger("SR2_bot").info(f"Link successfully fetched: {redirector_request}")
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -183,9 +183,11 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             client, callback_query.from_user.id, callback_query.data
         )
 
+    logging.getLogger("SR2_bot").info("Auth successful")
+
     await app.start()
 
-    logging.getLogger("SR2_bot").info("Auth successful")
+    logging.getLogger("SR2_bot").info("App started")
 
     await idle()
 
