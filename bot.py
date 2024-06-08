@@ -12,7 +12,6 @@ from database import (
     addUser,
     session,
     Chats,
-    getUserLang,
 )
 from utils import available_locales, get_rows, get_translation, getUserLang
 from lang_constants import (
