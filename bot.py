@@ -5,13 +5,12 @@ import validators
 from database import (
     upsertLink,
     upsertLang,
-    selectLang,
     selectLink,
     selectReport,
     upsertReport,
-    addUser,
     session,
     Chats,
+    userLangChecker
 )
 from utils import available_locales, get_rows, get_translation, getUserLang
 from lang_constants import (
@@ -27,20 +26,12 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
-
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
-        try:
-            user_lang = selectLang(Chats, message.chat.id)
-        except:
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
-            user_lang = message.from_user.language_code
-            addUser(Chats, message.chat.id)
-            session.commit()
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} added to database.")
+        user_lang = userLangChecker(Chats, message, logging.getLogger('gsc-bot'))
 
         locales = available_locales.keys()
 
@@ -48,14 +39,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
-        try:
-            user_lang = selectLang(Chats, message.chat.id)
-        except:
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
-            user_lang = message.from_user.language_code
-            addUser(Chats, message.chat.id)
-            session.commit()
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} added to database.")
+        user_lang = userLangChecker(Chats, message, logging.getLogger('gsc-bot'))
 
         _ = get_translation(user_lang)
 
@@ -63,14 +47,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
-        try:
-            user_lang = selectLang(Chats, message.chat.id)
-        except:
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} not yet in db. Using app lang.")
-            user_lang = message.from_user.language_code
-            addUser(Chats, message.chat.id)
-            session.commit()
-            logging.getLogger('gsc-bot').info(f"Chat id {message.chat.id} added to database.")
+        user_lang = userLangChecker(Chats, message, logging.getLogger('gsc-bot'))
 
         _ = get_translation(user_lang)
 
