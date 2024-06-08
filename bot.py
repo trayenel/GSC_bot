@@ -60,15 +60,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             return
 
         if selectLink(Chats, message.chat.id) != message.text:
+            logging.getLogger("SR2_bot").info(f"Storing link from chat id {message.chat.id} in database: {message.text}")
             upsertLink(Chats, message.chat.id, message.text)
             upsertReport(Chats, message.chat.id, 0)
             session.commit()
+            logging.getLogger("SR2_bot").info(f"Link {message.text} from chat id {message.chat.id} stored.")
 
         link = message.text
 
         redirector_request = f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
 
-        logging.getLogger("SR2_bot").info(f"Requesting link to redirector {redirector_request}")
+        logging.getLogger("SR2_bot").info(f"Requesting link from chat id {message.chat.id} to redirector: {redirector_request}")
 
         r = requests.get(redirector_request)
 
@@ -76,16 +78,19 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
             )
-            return logging.getLogger("SR2_bot").error(f"Link unsupported by redirector: {redirector_request}")
+            return logging.getLogger("SR2_bot").error(f"Link from chat id {message.chat.id} unsupported by redirector: {redirector_request}")
 
         if r.status_code == 500:
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE))
-            return logging.getLogger("SR2_bot").error(f"Link is broken: {redirector_request}")
+            return logging.getLogger("SR2_bot").error(f"Link from chat id {message.chat.id} is broken: {redirector_request}")
 
         url = r.json()["url"]
-        await send_link_with_report_menu(client, message.chat.id, user_lang, url)
-        return logging.getLogger("SR2_bot").info(f"Link successfully fetched: {redirector_request}")
+
+        if url is not None:
+            await send_link_with_report_menu(client, message.chat.id, user_lang, url)
+
+            return logging.getLogger("SR2_bot").info(f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}")
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
