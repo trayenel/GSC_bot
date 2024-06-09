@@ -10,7 +10,7 @@ from database import (
     upsertReport,
     session,
     Chats,
-    userLangChecker
+    userLangChecker,
 )
 from utils import available_locales, get_rows, get_translation, getUserLang
 from lang_constants import (
@@ -18,7 +18,7 @@ from lang_constants import (
     HELP_MESSAGE,
     SITE_UNSUPPORTED_MESSAGE,
     REPORT_TRUE,
-    BROKEN_URL_MESSAGE
+    BROKEN_URL_MESSAGE,
 )
 from pyrogram import Client, filters, idle
 from pyrogram.types import (
@@ -26,12 +26,13 @@ from pyrogram.types import (
     InlineKeyboardButton,
 )
 
+
 async def login(name, API_ID, API_HASH, BOT_TOKEN):
     app = Client(name, api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
     @app.on_message(filters.command(["start"]) & filters.private)
     async def startHandler(client, message):
-        user_lang = userLangChecker(Chats, message, logging.getLogger('gsc-bot'))
+        user_lang = userLangChecker(Chats, message, logging.getLogger("gsc-bot"))
 
         locales = available_locales.keys()
 
@@ -39,7 +40,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.command(["help"]) & filters.private)
     async def helpHandler(client, message):
-        user_lang = userLangChecker(Chats, message, logging.getLogger('gsc-bot'))
+        user_lang = userLangChecker(Chats, message, logging.getLogger("gsc-bot"))
 
         _ = get_translation(user_lang)
 
@@ -47,7 +48,7 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
 
     @app.on_message(filters.private)
     async def domainHandler(client, message):
-        user_lang = userLangChecker(Chats, message, logging.getLogger('gsc-bot'))
+        user_lang = userLangChecker(Chats, message, logging.getLogger("gsc-bot"))
 
         _ = get_translation(user_lang)
 
@@ -61,18 +62,24 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         storedLink = selectLink(Chats, message.chat.id)
         if storedLink != message.text:
             logging.getLogger("gsc-bot").info(
-                f"Storing link from chat id {message.chat.id} in database: {message.text}")
+                f"Storing link from chat id {message.chat.id} in database: {message.text}"
+            )
             upsertLink(Chats, message.chat.id, message.text)
             upsertReport(Chats, message.chat.id, 0)
             session.commit()
-            logging.getLogger("gsc-bot").info(f"Link from chat id {message.chat.id} stored.")
+            logging.getLogger("gsc-bot").info(
+                f"Link from chat id {message.chat.id} stored."
+            )
 
         link = message.text
 
-        redirector_request = f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
+        redirector_request = (
+            f"http://redirector.cgdev.uk:5000/link?url={link}&type=getsitecopy"
+        )
 
         logging.getLogger("gsc-bot").info(
-            f"Requesting link from chat id {message.chat.id} to redirector: {message.text}")
+            f"Requesting link from chat id {message.chat.id} to redirector: {message.text}"
+        )
 
         r = requests.get(redirector_request)
 
@@ -80,12 +87,17 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             await send_link_with_report_menu(
                 client, message.chat.id, user_lang, _(SITE_UNSUPPORTED_MESSAGE)
             )
-            return logging.getLogger("gsc-bot").warning(f"Api returned status code: {r.status_code}")
+            return logging.getLogger("gsc-bot").warning(
+                f"Api returned status code: {r.status_code}"
+            )
 
         if r.status_code == 500:
             await send_link_with_report_menu(
-                client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE))
-            return logging.getLogger("gsc-bot").warning(f"Api returned status code: {r.status_code}")
+                client, message.chat.id, user_lang, _(BROKEN_URL_MESSAGE)
+            )
+            return logging.getLogger("gsc-bot").warning(
+                f"Api returned status code: {r.status_code}"
+            )
 
         url = r.json()["url"]
 
@@ -93,7 +105,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             await send_link_with_report_menu(client, message.chat.id, user_lang, url)
 
             return logging.getLogger("gsc-bot").info(
-                f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}")
+                f"Link from chat id {message.chat.id} successfully fetched: {redirector_request}"
+            )
 
     async def send_language_menu(client: Client, chat_id: int, user_lang: str):
         # Set the translation to user_lang.
@@ -137,7 +150,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
         )
 
     async def send_welcome_menu(client: Client, user_id: int, lang: str):
-        logging.getLogger('gsc-bot').info(f'Chat id {user_id} changed language to {lang}.')
+        logging.getLogger("gsc-bot").info(
+            f"Chat id {user_id} changed language to {lang}."
+        )
         upsertLang(Chats, user_id, lang)
         session.commit()
 
@@ -172,7 +187,8 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
             _ = get_translation(callback_query.data.split(":")[1])
 
             logging.getLogger("gsc-bot").info(
-                f"Chat id {callback_query.from_user.id} reporting link: {selectLink(Chats, callback_query.from_user.id)}")
+                f"Chat id {callback_query.from_user.id} reporting link: {selectLink(Chats, callback_query.from_user.id)}"
+            )
 
             if selectReport(Chats, callback_query.from_user.id) == 1:
                 await client.send_message(
@@ -181,7 +197,9 @@ async def login(name, API_ID, API_HASH, BOT_TOKEN):
                 return logging.getLogger("gsc-bot").error(f"Link already reported.")
 
             upsertReport(Chats, callback_query.from_user.id, 1)
-            logging.getLogger("gsc-bot").info(f"Link reported by chat id: {callback_query.from_user.id}.")
+            logging.getLogger("gsc-bot").info(
+                f"Link reported by chat id: {callback_query.from_user.id}."
+            )
 
             return await client.send_message(
                 callback_query.from_user.id, _(REPORT_TRUE)

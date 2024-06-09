@@ -37,7 +37,7 @@ try:
             config["TOKENS"]["BOT_TOKEN"],
         )
     )
-    print('')
+    print("")
     logger.info("Application stopped gracefully.")
 
 except (pyrogram.errors.ApiIdInvalid, pyrogram.errors.PhoneNumberInvalid) as e:
