@@ -11,3 +11,4 @@ sr2trn_bot.session
 sr2trn_bot.session-journal
 sqlite.db
 .DS_Store
+__pycache__
