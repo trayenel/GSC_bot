@@ -8,7 +8,7 @@ from utils import init_argparse, setup_gettext
 setup_gettext()
 
 loop = asyncio.get_event_loop()
-logger = logging.getLogger("SR2_bot")
+logger = logging.getLogger("gsc-bot")
 config = configparser.ConfigParser()
 args = init_argparse().parse_args()
 
@@ -37,7 +37,7 @@ try:
             config["TOKENS"]["BOT_TOKEN"],
         )
     )
-    print('')
+    print("")
     logger.info("Application stopped gracefully.")
 
 except (pyrogram.errors.ApiIdInvalid, pyrogram.errors.PhoneNumberInvalid) as e:
